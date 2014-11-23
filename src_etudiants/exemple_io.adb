@@ -1,5 +1,6 @@
 with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Float_Text_Io; use Ada.Float_Text_Io;
 
 -- Exemple de lecture/ecriture de donnes dans un fichier,
 -- a l'aide de flux Ada.
@@ -70,28 +71,37 @@ procedure exemple_IO is
 
 	-- Ecrit dans un fichier ouvert en ecriture
 	procedure Ecriture(Nom_Fichier : in String) is
-		Fichier : Ada.Streams.Stream_IO.File_Type;
-		Flux : Ada.Streams.Stream_IO.Stream_Access;
+	--	Fichier : Ada.Streams.Stream_IO.File_Type;
+		Fichier : Ada.Text_Io.File_Type;
+	--	Flux : Ada.Streams.Stream_IO.Stream_Access;
 		I1 : Integer := -12345;
 		I2 : Integer := 1;
+        F : Float := -5.254877;
 		O : Octet := 42;
 	begin
 		Create(Fichier, Out_File, Nom_Fichier);
-		Flux := Stream(Fichier);
+	--	Flux := Stream(Fichier);
 
 		Put("Ecriture des donnees: ");
 		Put(I1); Put(", ");
+		Put(I2); Put(", ");
+		Put(F, Exp => 0) ; Put(", ");
 		Put(Integer(O)); Put(", ");
 		Put('a'); Put(", ");
 		Put('b'); Put(", ");
 		Put('c'); Put(", ");
 		new_Line;
-
-		Integer'Output(Flux, I1);
-		Octet'Output(Flux, O);
-		Character'Output(Flux, 'a');
-		Character'Output(Flux, 'b');
-		Character'Output(Flux, 'c');
+        
+        Set_Output(Fichier);
+        Put(I1); Put(", ");
+		Put(I2); Put(", ");
+		Put(F, Exp => 0) ; Put(", ");
+		Put(Character'Pos('O')); Put(", ");
+		Put('a'); Put(", ");
+		Put('O'); Put(", ");
+		Put('b'); Put(", ");
+		Put('c'); Put(", ");
+        Set_Output(Standard_Output);
 		
 		Close(Fichier);
 	end Ecriture;

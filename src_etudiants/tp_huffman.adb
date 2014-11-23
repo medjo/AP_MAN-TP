@@ -8,6 +8,7 @@ procedure tp_huffman is
 -- COMPRESSION
 ------------------------------------------------------------------------------
 
+
 	procedure Compresse(Nom_Fichier_In, Nom_Fichier_Out : in String) is
 	begin
 		-- A COMPLETER!
