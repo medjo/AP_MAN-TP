@@ -3,11 +3,14 @@ with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Ada.Command_Line; use  Ada.Command_Line;
 with Compression; use Compression;
 
+-- MEMO :   Character'Pos('a') = 97
+--          Character'Val(97) = a
 
 procedure test_lecture_fichier is
     Fichier : String (1 .. Argument(1)'Length);
     Tab_Occ : Tab_Char;
     Sum : Integer := 0;
+    --a, b : Character;
 begin
     if Argument_Count /= 1 then
         Put_Line("Veuillez lancer le programme de la manière suivante :");
@@ -24,13 +27,13 @@ begin
         end loop;
         Lecture_Fichier(Fichier, Tab_Occ, Tab_Occ'Length);
         for I in Tab_Occ'range loop
-            Put(Integer'Image(I) & " : ");
-            Put(Tab_Occ(I));
-            new_Line;
-            Sum := Sum + Tab_Occ(I);
+            if Tab_Occ(I) /= 0 then
+                Put("Case n°"&Integer'Image(I)&"("&Character'Val(I)&")" & "     Occurrences : "&Integer'Image(Tab_Occ(I)));
+                new_Line;
+                Sum := Sum + Tab_Occ(I);
+            end if;
         end loop;
         Put("Somme = " & Integer'Image(Sum));
-            
     end if;
 
 end test_lecture_fichier;

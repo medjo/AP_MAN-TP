@@ -1,0 +1,3 @@
+Pour implémenter une file à priorités nous avons choisi de le faire à l'aide d'un tableau de files
+en gardant l'indice de la priorité la plus faible présente dans le tableau car dès la lecture du
+fichier, on connait le nombre de priorités différentes, et l'insersion et la suppression est en O(1)
