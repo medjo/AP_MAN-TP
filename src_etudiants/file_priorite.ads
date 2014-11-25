@@ -1,6 +1,5 @@
 -- paquetage generique de file de priorite 
 -- Les priorites sont munies d'un ordre total "Est_Prioritaire"
-with listes; use listes;
 
 generic
 	-- le type representant une donnee de la file
@@ -54,9 +53,8 @@ package File_Priorite is
 private
 	-- Le type File_Interne doit etre defini dans le corps du package
 	-- (file_priorite.adb)
-	type File_Prio is array (Integer) of Liste;
-	type Donnee is Character;
-	type Priorite is Integer;
+	type File_Interne;
+	type File_Prio is access File_Interne;
 	
 end File_Priorite;
 
