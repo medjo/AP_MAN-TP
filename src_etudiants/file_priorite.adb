@@ -52,9 +52,7 @@ package body File_Priorite is
 		Indice : Integer;
 		Tmp : Element;
 	begin
-		if (Est_Vide(F)) then
-			raise File_Prio_Vide;
-		elsif (NOT(Est_Pleine(F))) then
+		if (NOT(Est_Pleine(F))) then
 			F.all.Capacite := F.all.Capacite + 1;
 			F.all.Tab[Capacite] := E;
 			Indice := Capacite;
