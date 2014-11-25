@@ -12,10 +12,11 @@ procedure tp_huffman is
 	procedure Compresse(Nom_Fichier_In, Nom_Fichier_Out : in String) is
     Tab_Occ : Tab_Char;
     Nb_Prio : Integer;
+    Huff : Arbre_Huffman;
 	begin
 		-- A COMPLETER!
-        Lecture_Fichier(Nom_Fichier_In, Tab_Occ, Tab_Occ'Length, Nb_Prio);
-        creation_arbre_Huff();
+
+        Huff := Cree_Huffman(Nom_Fichier_In);
 		return;
 	end Compresse;
 

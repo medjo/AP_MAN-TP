@@ -22,7 +22,7 @@ package body File_Priorite is
 	procedure Liberer is new Ada.Unchecked_Deallocation (File_Interne, File_Prio);	
 	
 	function Cree_File(Capacite: Positive) return File_Prio is
-		Tab : Table(Positive'First .. Capacite);
+		Tab : Table(Positive'First .. Positive'First + Capacite);
 		File : File_Prio := new File_Interne'(Tab, 0);
 	begin
 		return File;

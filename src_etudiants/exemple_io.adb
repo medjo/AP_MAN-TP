@@ -88,7 +88,7 @@ procedure exemple_IO is
 		Put(F, Exp => 0) ; Put(", ");
 		Put(Integer(O)); Put(", ");
 		Put('a'); Put(", ");
-		Put('b'); Put(", ");
+		Put('é'); Put(", ");
 		Put('c'); Put(", ");
 		new_Line;
         
@@ -98,7 +98,7 @@ procedure exemple_IO is
 		Put(F, Exp => 0) ; Put(", ");
 		Put(Character'Pos('O')); Put(", ");
 		Put('a'); Put(", ");
-		Put('O'); Put(", ");
+		Put('é'); Put(", ");
 		Put('b'); Put(", ");
 		Put('c'); Put(", ");
         Set_Output(Standard_Output);
