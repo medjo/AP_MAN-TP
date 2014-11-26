@@ -49,11 +49,13 @@ package File_Priorite is
 	-- sinon
 	--   leve l'exception File_Vide
 	procedure Prochain(F: in File_Prio; D: out Donnee; P: out Priorite);
+
+    procedure PrintCapa(F : in File_Prio);
 		
 private
 	-- Le type File_Interne doit etre defini dans le corps du package
 	-- (file_priorite.adb)
-	type File_Interne;
+	type File_Interne(<>);--On donne la taille du champ Tab en paramètre
 	type File_Prio is access File_Interne;
 	
 end File_Priorite;

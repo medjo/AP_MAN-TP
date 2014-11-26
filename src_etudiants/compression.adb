@@ -17,7 +17,7 @@ package body  Compression is
 		Flux := Stream(Fichier);
         while not End_Of_File(Fichier) loop
 			C := Character'Input(Flux); 
-            Put(C);
+            --Put(C);
             if Character'Pos(C) in Tab_Char'range then
                 Tab_Occurrences(Character'Pos(C)) := Tab_Occurrences(Character'Pos(C)) + 1;
             else

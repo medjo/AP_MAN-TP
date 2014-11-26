@@ -13,17 +13,16 @@ package body File_Priorite is
 					
 	type Table is array (Positive range <>) of Element;
 	
-	type File_Interne is 
+	type File_Interne(Taille : Positive) is 
 		record
-			Tab : Table;
-			Capacite : Integer;
+			Tab : Table(1 .. Taille);
+            Capacite : Integer := 0;
 		end record;
 	
 	procedure Liberer is new Ada.Unchecked_Deallocation (File_Interne, File_Prio);	
 	
 	function Cree_File(Capacite: Positive) return File_Prio is
-		Tab : Table(Positive'First .. Positive'First + Capacite);
-		File : File_Prio := new File_Interne'(Tab, 0);
+		File : File_Prio := new File_Interne(Capacite);
 	begin
 		return File;
 	end Cree_File;
@@ -35,12 +34,12 @@ package body File_Priorite is
 	
 	function Est_Vide(F: in File_Prio) return Boolean is
 	begin
-		return (F = NULL);
+		return (F.Capacite = 0);
 	end Est_Vide;
 	
 	function Est_Pleine(F: in File_Prio) return Boolean is
 	begin
-		if (F.all.Capacite < (F.all.Tab)'Last) then
+		if (F.all.Capacite) < (F.all.Tab'Last) then
 			return false;
 		else
 			return true;
@@ -48,19 +47,19 @@ package body File_Priorite is
 	end Est_Pleine;
 	
 	procedure Insere(F : in File_Prio; D : in Donnee; P : in Priorite) is
-		E : Element := new Element(D, P);
+		E : Element := Element'(D, P);
 		Indice : Integer;
 		Tmp : Element;
 	begin
 		if (NOT(Est_Pleine(F))) then
 			F.all.Capacite := F.all.Capacite + 1;
-			F.all.Tab[Capacite] := E;
-			Indice := Capacite;
-			while (Est_Prioritaire (F.all.Tab[Indice].Prio, F.all.Tab[Indice/2].Prio)) loop
-				Tmp := F.all.Tab[Indice];
-				F.all.Tab[Indice] := F.all.Tab[Indice/2];
-				F.all.Tab[Indice/2] := Tmp;
-				Indice := Indice/2;
+			F.all.Tab(F.Capacite) := E;
+			Indice := F.Capacite;
+			while (Indice > 1) and then (Est_Prioritaire (F.all.Tab(Indice).Prio, F.all.Tab(Indice / 2).Prio)) loop
+				Tmp := F.all.Tab(Indice);
+				F.all.Tab(Indice) := F.all.Tab(Indice / 2);
+				F.all.Tab(Indice / 2) := Tmp;
+				Indice := Indice / 2;
 			end loop;
 		else
 			raise File_Prio_Pleine;
@@ -80,7 +79,7 @@ package body File_Priorite is
 		function Existe_Et_Est_Prio(Fils : in Integer; Pere : in Integer) return Boolean is
 		begin
 			if (Fils <= F.all.Capacite) then
-				return Est_Prioritaire (F.all.Tab[Fils].Prio, F.all.Tab[Pere].Prio);
+				return Est_Prioritaire (F.all.Tab(Fils).Prio, F.all.Tab(Pere).Prio);
 			else
 				return false;
 			end if;
@@ -90,10 +89,10 @@ package body File_Priorite is
 		if (Est_Vide(F)) then
 			raise File_Prio_Vide;
 		else 
-			D := F.all.Tab[(F.all.Tab)'First].Data;
-			P := F.all.Tab[(F.all.Tab)'First].Prio;
-			F.all.Tab[(F.all.Tab)'First] := F.all.Tab[F.all.Capacite];
-			F.all.Capacite := F.all.Capactite - 1;
+			D := F.all.Tab(F.all.Tab'First).Data;
+			P := F.all.Tab(F.all.Tab'First).Prio;
+			F.all.Tab(F.all.Tab'First) := F.all.Tab(F.all.Capacite);
+			F.all.Capacite := F.all.Capacite - 1;
 			Indice := F.all.Tab'First;
 			Fils_G_Prio := Existe_Et_Est_Prio (2 * Indice, Indice);
 			Fils_D_Prio := Existe_Et_Est_Prio (2 * Indice + 1, Indice);
@@ -101,19 +100,19 @@ package body File_Priorite is
 					AND	(Fils_G_Prio OR Fils_D_Prio))
 			loop
 				if ((2 * Indice + 1) > F.all.Capacite 
-						OR Est_Prioritaire (F.all.Tab[2 * Indice].Prio, 
-								F.all.Tab[2 * Indice + 1].Prio));
+						or Est_Prioritaire (F.all.Tab(2 * Indice).Prio, 
+								F.all.Tab(2 * Indice + 1).Prio))
 				then
-					Tmp := F.all.Tab[Indice];
-					F.all.Tab[Indice] := F.all.Tab[Indice * 2];
-					F.all.Tab[Indice * 2] := Tmp;
+					Tmp := F.all.Tab(Indice);
+					F.all.Tab(Indice) := F.all.Tab(Indice * 2);
+					F.all.Tab(Indice * 2) := Tmp;
 					Indice := Indice * 2;
 					Fils_G_Prio := Existe_Et_Est_Prio (2 * Indice, Indice);
 					Fils_D_Prio := Existe_Et_Est_Prio (2 * Indice + 1, Indice);
 				else 
-					Tmp := F.all.Tab[Indice];
-					F.all.Tab[Indice] := F.all.Tab[Indice * 2 + 1];
-					F.all.Tab[Indice * 2 + 1] := Tmp;
+					Tmp := F.all.Tab(Indice);
+					F.all.Tab(Indice) := F.all.Tab(Indice * 2 + 1);
+					F.all.Tab(Indice * 2 + 1) := Tmp;
 					Indice := Indice * 2 + 1;
 					Fils_G_Prio := Existe_Et_Est_Prio (2 * Indice, Indice);
 					Fils_D_Prio := Existe_Et_Est_Prio (2 * Indice + 1, Indice);
@@ -127,9 +126,14 @@ package body File_Priorite is
 		if (Est_Vide(F)) then
 			raise File_Prio_Vide;
 		else 
-			D := F.all.Tab[(F.all.Tab)'First].Data;
-			P := F.all.Tab[(F.all.Tab)'First].Prio;
+			D := F.all.Tab(F.all.Tab'First).Data;
+			P := F.all.Tab(F.all.Tab'First).Prio;
 		end if;
 	end Prochain;
 	
+    procedure PrintCapa (F : in File_Prio) is
+    begin
+        Put(F.Capacite);
+    end PrintCapa;
+    
 end File_Priorite;
