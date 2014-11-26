@@ -1,3 +1,4 @@
+with File_Priorite;
 package Compression is
 
 	--type Octet;

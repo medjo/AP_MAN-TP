@@ -1,4 +1,5 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with File_Priorite;
 with Ada.Text_Io; use Ada.Text_Io;
 
 package body  Compression is
@@ -35,6 +36,14 @@ package body  Compression is
     
 
     function Creation_File_Prio(Tab_Occ : in Tab_Char ; Nb_Prio : in Integer) return File_Prio is
+
+        function Est_Prioritaire(P1, P2 : Integer) return Boolean is
+        begin
+            return P1 <= P2;
+        end;
+        package FP is new File_Priorite(Character, Integer, Est_Prioritaire);
+        use FP;
+
         F : File_Prio;
         I : Integer := 0;
     begin
