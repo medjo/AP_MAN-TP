@@ -10,7 +10,6 @@ package body Compression is
     end;
     package FP is new File_Priorite(Character, Natural, Est_Prioritaire);
     use FP;
-    --type File_Prio is FP.File_Prio;
 
 	type Octet is new Integer range 0 .. 255;
 	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
@@ -53,8 +52,10 @@ package body Compression is
                 Insere(F, Character'Val(I), Tab_Occ(I));
             end if;
         end loop;
-        Nb_Carac := F.Tab(1).Prio;
-        return A;
+        while GetCapa(F) > 1 loop
+            Fusionne_2_Premiers(F);
+        end loop;
+        Nb_Carac := GetPrio(F, 1);
     end Creation_Arbre_Huff;
 
 

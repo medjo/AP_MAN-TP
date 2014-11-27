@@ -32,7 +32,7 @@ package body Huffman is
         Nb_Total_Caracteres : Natural;
     begin 
             Lecture_Fichier(Nom_Fichier, Tab_Occ, Nb_Prio);
-            Creation_Arbre_Huff(Tab_Occ , Nb_Prio, Nb_Total_Caracteres);
+            Creation_Arbre_Huff(Tab_Occ , Nb_Prio, Nb_Total_Caracteres, A);
             AH.A := A;
             AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
             return AH;

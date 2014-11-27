@@ -34,7 +34,7 @@ package body File_Priorite is
 	
 	function Est_Vide(F: in File_Prio) return Boolean is
 	begin
-		return (F.Capacite = 0);
+		return (F.Capacite = 0 or else F = NULL);
 	end Est_Vide;
 	
 	function Est_Pleine(F: in File_Prio) return Boolean is
@@ -131,9 +131,19 @@ package body File_Priorite is
 		end if;
 	end Prochain;
 	
-    procedure PrintCapa (F : in File_Prio) is
+    function GetPrio(F : in File_Prio ; Indice : in Positive) return Priorite is
     begin
-        Put(F.Capacite);
-    end PrintCapa;
-    
+        return F.Tab(Indice).Prio;
+    end GetPrio;
+
+    function GetCapa(F : in File_Prio ) return Integer is
+    begin
+        return F.Capacite;
+    end GetCapa;
+
+    procedure Fusionne_2_Premiers(F : in out File_Prio) is
+    begin
+        null;
+    end Fusionne_2_Premiers;
+
 end File_Priorite;

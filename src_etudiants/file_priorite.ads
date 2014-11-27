@@ -48,10 +48,13 @@ package File_Priorite is
 	--   sortie: D est la donnee, P sa priorite
 	-- sinon
 	--   leve l'exception File_Vide
-	procedure Prochain(F: in File_Prio; D: out Donnee; P: out Priorite);
+	procedure Prochain(F: in File_Prio ; D: out Donnee; P: out Priorite);
 
-    procedure PrintCapa(F : in File_Prio);
-		
+    function GetPrio(F : in File_Prio ; Indice : in Positive) return Priorite;
+
+    function GetCapa(F : in File_Prio ) return Integer;
+
+    procedure Fusionne_2_Premiers(F : in out File_Prio);
 private
 	-- Le type File_Interne doit etre defini dans le corps du package
 	-- (file_priorite.adb)
