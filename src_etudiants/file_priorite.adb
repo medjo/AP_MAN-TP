@@ -9,8 +9,6 @@ package body File_Priorite is
 		record
 			Data : Donnee;
 			Prio : Priorite;
-            FilsG : access Element ; 
-            FilsD : access Element ;
 		end record;
 					
 	type Table is array (Positive range <>) of Element;
@@ -49,7 +47,7 @@ package body File_Priorite is
 	end Est_Pleine;
 	
 	procedure Insere(F : in File_Prio; D : in Donnee; P : in Priorite) is
-		E : Element := Element'(Data => D, Prio => P, FilsG => NULL, FilsD => NULL);
+		E : Element := Element'(Data => D, Prio => P);
 		Indice : Integer;
 		Tmp : Element;
 	begin

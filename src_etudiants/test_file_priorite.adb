@@ -1,5 +1,6 @@
 with Ada.Text_Io; use Ada.Text_Io;
 with File_Priorite;
+--with Huffman; use Huffman;
 
 
 procedure test_file_priorite is

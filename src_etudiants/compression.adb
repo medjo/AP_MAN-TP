@@ -2,8 +2,15 @@ with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 with File_Priorite;
 with Ada.Text_Io; use Ada.Text_Io;
 
-package body  Compression is
+package body Compression is
 
+    function Est_Prioritaire(P1, P2 : Integer) return Boolean is
+    begin
+        return P1 <= P2;
+    end;
+    package FP is new File_Priorite(Character, Natural, Est_Prioritaire);
+    use FP;
+    --type File_Prio is FP.File_Prio;
 
 	type Octet is new Integer range 0 .. 255;
 	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
@@ -35,14 +42,7 @@ package body  Compression is
     end Lecture_Fichier;
     
 
-    function Creation_File_Prio(Tab_Occ : in Tab_Char ; Nb_Prio : in Integer) return File_Prio is
-
-        function Est_Prioritaire(P1, P2 : Integer) return Boolean is
-        begin
-            return P1 <= P2;
-        end;
-        package FP is new File_Priorite(Character, Integer, Est_Prioritaire);
-        use FP;
+    procedure Creation_Arbre_Huff(Tab_Occ : in Tab_Char ; Nb_Prio : in Integer ; Nb_Carac : out Natural ; A : in out Arbre) is
 
         F : File_Prio;
         I : Integer := 0;
@@ -53,8 +53,9 @@ package body  Compression is
                 Insere(F, Character'Val(I), Tab_Occ(I));
             end if;
         end loop;
-        return F;
-    end Creation_File_Prio;
+        Nb_Carac := F.Tab(1).Prio;
+        return A;
+    end Creation_Arbre_Huff;
 
 
 end Compression;

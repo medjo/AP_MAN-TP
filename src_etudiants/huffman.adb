@@ -4,6 +4,14 @@ with File_Priorite;
 
 package body Huffman is
 
+    function Est_Prioritaire(P1, P2 : Integer) return Boolean is
+    begin
+        return P1 <= P2;
+    end;
+    package FP is new File_Priorite(Arbre, Integer, Est_Prioritaire);
+    use FP;
+
+    
     type Noeud is
 		record
 			Data : Character;
@@ -17,20 +25,17 @@ package body Huffman is
 	-- et le retourne.
     function Cree_Huffman(Nom_Fichier : in String) return Arbre_Huffman is
 
-        function Est_Prioritaire(P1, P2 : Integer) return Boolean is
-        begin
-            return P1 <= P2;
-        end;
-        package FP is new File_Priorite(Character, Integer, Est_Prioritaire);
-        use FP;
-        F : File_Prio;
         Tab_Occ : Tab_Char;
         Nb_Prio : Integer := 0;
-        A : Arbre_Huffman;
+        A : Arbre;
+        AH : Arbre_Huffman;
+        Nb_Total_Caracteres : Natural;
     begin 
             Lecture_Fichier(Nom_Fichier, Tab_Occ, Nb_Prio);
-            F := Creation_File_Prio(Tab_Occ , Nb_Prio);
-            return A;
+            Creation_Arbre_Huff(Tab_Occ , Nb_Prio, Nb_Total_Caracteres);
+            AH.A := A;
+            AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
+            return AH;
     end Cree_Huffman;
 
     -- Libere l'arbre de racine A.
