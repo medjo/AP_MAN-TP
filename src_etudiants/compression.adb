@@ -1,5 +1,4 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
-with File_Priorite;
 with Ada.Text_Io; use Ada.Text_Io;
 
 package body Compression is
@@ -8,9 +7,7 @@ package body Compression is
     begin
         return P1 <= P2;
     end;
-    package FP is new File_Priorite(Character, Natural, Est_Prioritaire);
-    use FP;
-
+    
 	type Octet is new Integer range 0 .. 255;
 	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
 
@@ -45,18 +42,37 @@ package body Compression is
 
         F : File_Prio;
         I : Integer := 0;
+        A1 : Arbre;
+        A2 : Arbre;
     begin
         F := Cree_File(Nb_Prio);
         for I in Tab_Occ'range loop
             if Tab_Occ(I) /= 0 then
-                Insere(F, Character'Val(I), Tab_Occ(I));
+                Insere(F, Cree_Arbre(Character'Val(I)), Tab_Occ(I));
             end if;
         end loop;
         while GetCapa(F) > 1 loop
-            Fusionne_2_Premiers(F);
+            A1 := Fusionne_2_Premiers(F);
         end loop;
         Nb_Carac := GetPrio(F, 1);
     end Creation_Arbre_Huff;
 
+
+    function Fusionne_2_Premiers(F : File_Prio) return Arbre is
+        A : Arbre;
+        Fils : Arbre;
+        Prio1 : Integer;
+        Prio2 : Integer;
+    begin
+        Cree_Arbre(A);
+        Cree_Arbre(Fils);
+        Supprime(F, Fils, Prio1);
+        SetFilsG(A, Fils);
+        Cree_Arbre(Fils);
+        Supprime(F, Fils, Prio2);
+        SetFilsD(A, Fils);
+        Insere(F, A, Prio1 + Prio2);
+        return A;
+    end Fusionne_2_Premiers;
 
 end Compression;

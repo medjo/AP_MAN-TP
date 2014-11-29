@@ -1,24 +1,51 @@
 with huffman; use huffman;
 with Compression; use Compression;
-with File_Priorite;
 
 package body Huffman is
 
-    function Est_Prioritaire(P1, P2 : Integer) return Boolean is
-    begin
-        return P1 <= P2;
-    end;
-    package FP is new File_Priorite(Arbre, Integer, Est_Prioritaire);
-    use FP;
-
-    
-    type Noeud is
+     type Noeud is
 		record
 			Data : Character;
-			Prio : Integer;
             FilsG : Arbre ; 
             FilsD : Arbre ;
 		end record;
+   
+    procedure Cree_Arbre( A : in out Arbre ) is
+    begin
+        A := new Noeud'(Data => Character'Val (0), others => null);
+    end Cree_Arbre;
+
+    function Cree_Arbre(Char : Character) return Arbre is
+        A : Arbre;
+    begin
+        A := new Noeud'(Data => Char, others => null);
+        return A;
+    end Cree_Arbre;
+
+    function GetData(A : Arbre) return Character is
+    begin
+        return A.Data;
+    end GetData;
+
+    function GetFilsG(A : Arbre) return Arbre is
+    begin
+        return A.FilsG;
+    end GetFilsG;
+    function GetFilsD(A : Arbre) return Arbre is
+    begin
+        return A.FilsD;
+    end GetFilsD;
+
+
+    procedure SetFilsG(A : in out Arbre ; Fils : in Arbre ) is
+    begin
+        A.FilsG := Fils;
+    end SetFilsG;
+
+    procedure SetFilsD(A : in out Arbre ; Fils : in Arbre ) is
+    begin
+        A.FilsD := Fils;
+    end SetFilsD;
 	-- Cree un arbre de Huffman a partir d'un fichier texte
 	-- Cette function lit le fichier et compte le nb d'occurences des
 	-- differents caracteres presents, puis genere l'arbre correspondant

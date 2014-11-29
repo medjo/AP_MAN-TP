@@ -54,7 +54,6 @@ package File_Priorite is
 
     function GetCapa(F : in File_Prio ) return Integer;
 
-    procedure Fusionne_2_Premiers(F : in out File_Prio);
 private
 	-- Le type File_Interne doit etre defini dans le corps du package
 	-- (file_priorite.adb)

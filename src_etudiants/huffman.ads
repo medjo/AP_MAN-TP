@@ -6,8 +6,9 @@ with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 
 package Huffman is
 
-	type Arbre is private;	
+    
 
+    type Arbre is private;
 	type Arbre_Huffman is record
 		-- l'arbre de Huffman proprement dit
 		A : Arbre;           
@@ -27,8 +28,6 @@ package Huffman is
 	-- Cette function lit le fichier et compte le nb d'occurences des
 	-- differents caracteres presents, puis genere l'arbre correspondant
 	-- et le retourne.
-	function Cree_Huffman(Nom_Fichier : in String)
-		return Arbre_Huffman;
 
 	-- Stocke un arbre dans un flux ouvert en ecriture
 	-- Le format de stockage est celui decrit dans le sujet
@@ -65,12 +64,39 @@ package Huffman is
 --				Caractere : out Character);
 --
 
+-- #########################################################
+     -- FONCTIONS LIEES A LA COMPRESSION
+    
+
+	function Cree_Huffman(Nom_Fichier : in String)
+		return Arbre_Huffman;
+
+    function GetFilsG(A : Arbre) return Arbre;
+
+    procedure SetFilsG(A : in out Arbre ; Fils : in Arbre );
+
+    function GetFilsD(A : Arbre) return Arbre;
+
+    procedure SetFilsD(A : in out Arbre ; Fils : in Arbre );
+
+    function Cree_Arbre(Char : Character) return Arbre;
+
+    procedure Cree_Arbre(A : in out Arbre);
+
+    function GetData(A : Arbre) return Character;
+-- #########################################################
+
+
+-- #########################################################
+     -- FONCTIONS LIEES A LA DECOMPRESSION
+
+
+
+
+
 private
 
-	-- type Noeud prive: a definir dans le body du package, huffman.adb
-	type Noeud;
-
-	type Arbre is Access Noeud;
-
+    type Noeud;
+    type Arbre is access Noeud;
 end Huffman;
 

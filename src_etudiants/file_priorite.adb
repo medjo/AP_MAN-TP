@@ -141,9 +141,4 @@ package body File_Priorite is
         return F.Capacite;
     end GetCapa;
 
-    procedure Fusionne_2_Premiers(F : in out File_Prio) is
-    begin
-        null;
-    end Fusionne_2_Premiers;
-
 end File_Priorite;
