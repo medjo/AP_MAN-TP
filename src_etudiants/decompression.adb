@@ -8,9 +8,9 @@ package body decompression is
 	function Lit_Huffman(Flux : Ada.Streams.Stream_IO.Stream_Access)
 			return Arbre_Huffman is
 		Prio : Integer;
-		D : Arbre;	
+		D : P_Arbre;	
 		H : Arbre_Huffman;
-		F : Huffman.FP.File_Prio;
+		F : File_Prio;
 		C : Integer;
 		Fin_Lecture_Huffman : Boolean := false;
 		
@@ -35,15 +35,15 @@ package body decompression is
 		Lire_Capacite(C);
 		F := Huffman.FP.Cree_File(C);
 		while (NOT(Fin_Lecture_Huffman)) loop
-			Lire_Donnee(D);
+			Lire_Donnee(D.all);
 			Lire_Priorite(Prio);
 			Huffman.FP.Insere(F, D, Prio);
 		end loop;
 		
 		while (Huffman.FP.GetCapa(F) > 1) loop
-			D := Fusionne_2_Premiers(F);
+			D.All := Fusionne_2_Premiers(F);
 		end loop;
-		H.A := D;
+		H.A := D.all;
 		H.Nb_Total_Caracteres := Huffman.FP.GetPrio(F, 1);
 		return (H);
 	end Lit_Huffman;

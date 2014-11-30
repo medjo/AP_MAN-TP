@@ -1,4 +1,5 @@
 with huffman; use huffman;
+use Huffman.FP;
 with File_Priorite;
 with Code; use Code;
 with Ada.Streams.Stream_IO;

@@ -1,7 +1,11 @@
-with huffman; use huffman;
-with Compression; use Compression;
+with compression; use compression;
 
 package body Huffman is
+
+    function Est_Prioritaire(P1, P2 : Integer) return Boolean is
+    begin
+        return P1 <= P2;
+    end;
 
      type Noeud is
 		record
@@ -10,6 +14,24 @@ package body Huffman is
             FilsD : Arbre ;
 		end record;
    
+	procedure Cree_P_Arbre (P_Arb : in out P_Arbre) is
+		A : Arbre;
+	begin
+		Cree_Arbre(A);
+		P_Arb := new Arbre;
+		P_Arb.all := A;
+	end Cree_P_Arbre;
+	
+	function Cree_P_Arbre (Char : Character) return P_Arbre is
+		A : Arbre;
+		P : P_Arbre;
+	begin
+		A := Cree_Arbre(Char);
+		P := new Arbre;
+		P.all := A;
+		return P;
+	end Cree_P_Arbre;
+	
     procedure Cree_Arbre( A : in out Arbre ) is
     begin
         A := new Noeud'(Data => Character'Val (0), others => null);
@@ -101,20 +123,20 @@ package body Huffman is
 --    end Ecrit_Huffman;
 
     function Fusionne_2_Premiers(F : File_Prio) return Arbre is
-        A : Arbre;
-        Fils : Arbre;
+        A : P_Arbre;
+        Fils : P_Arbre;
         Prio1 : Integer;
         Prio2 : Integer;
     begin
-        Cree_Arbre(A);
-        Cree_Arbre(Fils);
+        Cree_P_Arbre(A);
+        Cree_P_Arbre(Fils);
         Supprime(F, Fils, Prio1);
-        SetFilsG(A, Fils);
-        Cree_Arbre(Fils);
+        SetFilsG(A.all, Fils.all);
+        Cree_Arbre(Fils.all);
         Supprime(F, Fils, Prio2);
-        SetFilsD(A, Fils);
+        SetFilsD(A.All, Fils.all);
         Insere(F, A, Prio1 + Prio2);
-        return A;
+        return A.All;
     end Fusionne_2_Premiers;
     
     

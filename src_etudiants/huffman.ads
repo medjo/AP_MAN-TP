@@ -1,4 +1,5 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+limited with compression;
 with File_Priorite;
 --with dico; use dico;
 --with Code; use Code;
@@ -17,8 +18,9 @@ package Huffman is
 	end record;
 
     function Est_Prioritaire(P1, P2 : Integer) return Boolean;
-
-    package FP is new File_Priorite(Arbre, Natural, Est_Prioritaire);
+    
+	type P_Arbre is access Arbre;
+    package FP is new File_Priorite(P_Arbre , Natural, Est_Prioritaire);
     use FP;
     
 	-- Libere l'arbre de racine A.
@@ -94,6 +96,9 @@ package Huffman is
 	function Fusionne_2_Premiers(F : File_Prio) return Arbre;
 
     function Est_Vide (A : in Arbre) return Boolean;
+    
+    procedure Cree_P_Arbre (P_Arb : in out P_Arbre);
+    function Cree_P_Arbre (Char : Character) return P_Arbre;
 
 -- #########################################################
      -- FONCTIONS LIEES A LA DECOMPRESSION

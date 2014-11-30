@@ -2,11 +2,6 @@ with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 with Ada.Text_Io; use Ada.Text_Io;
 
 package body Compression is
-
-    function Est_Prioritaire(P1, P2 : Integer) return Boolean is
-    begin
-        return P1 <= P2;
-    end;
     
 	type Octet is new Integer range 0 .. 255;
 	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
@@ -40,21 +35,22 @@ package body Compression is
 
     procedure Creation_Arbre_Huff(Tab_Occ : in Tab_Char ; Nb_Prio : in Integer ; Nb_Carac : out Natural ; A : in out Arbre) is
 
-        F : File_Prio;
+        F : Huffman.FP.File_Prio;
         I : Integer := 0;
-        A1 : Arbre;
-        A2 : Arbre;
+        A1 : P_Arbre;
     begin
-        F := Cree_File(Nb_Prio);
+    	Cree_P_Arbre(A1);
+        F := Huffman.FP.Cree_File(Nb_Prio);
         for I in Tab_Occ'range loop
             if Tab_Occ(I) /= 0 then
-                Insere(F, Cree_Arbre(Character'Val(I)), Tab_Occ(I));
+            	A1.all := Cree_Arbre(Character'Val(I)); 
+                Huffman.FP.Insere(F, A1, Tab_Occ(I));
             end if;
         end loop;
-        while GetCapa(F) > 1 loop
-            A1 := Fusionne_2_Premiers(F);
+        while Huffman.FP.GetCapa(F) > 1 loop
+            A1.all := Fusionne_2_Premiers(F);
         end loop;
-        Nb_Carac := GetPrio(F, 1);
+        Nb_Carac := Huffman.FP.GetPrio(F, 1);
     end Creation_Arbre_Huff;
 
 
