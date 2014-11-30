@@ -58,21 +58,4 @@ package body Compression is
     end Creation_Arbre_Huff;
 
 
-    function Fusionne_2_Premiers(F : File_Prio) return Arbre is
-        A : Arbre;
-        Fils : Arbre;
-        Prio1 : Integer;
-        Prio2 : Integer;
-    begin
-        Cree_Arbre(A);
-        Cree_Arbre(Fils);
-        Supprime(F, Fils, Prio1);
-        SetFilsG(A, Fils);
-        Cree_Arbre(Fils);
-        Supprime(F, Fils, Prio2);
-        SetFilsD(A, Fils);
-        Insere(F, A, Prio1 + Prio2);
-        return A;
-    end Fusionne_2_Premiers;
-
 end Compression;

@@ -64,6 +64,14 @@ package body Huffman is
             AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
             return AH;
     end Cree_Huffman;
+    
+    function Est_Vide (A : in Arbre) return Boolean is
+    begin
+    	if (A = NULL) then
+    		return true;
+    	end if;
+    	return false;
+    end Est_Vide;
 
     -- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.
@@ -92,6 +100,24 @@ package body Huffman is
 --        return H;
 --    end Ecrit_Huffman;
 
+    function Fusionne_2_Premiers(F : File_Prio) return Arbre is
+        A : Arbre;
+        Fils : Arbre;
+        Prio1 : Integer;
+        Prio2 : Integer;
+    begin
+        Cree_Arbre(A);
+        Cree_Arbre(Fils);
+        Supprime(F, Fils, Prio1);
+        SetFilsG(A, Fils);
+        Cree_Arbre(Fils);
+        Supprime(F, Fils, Prio2);
+        SetFilsD(A, Fils);
+        Insere(F, A, Prio1 + Prio2);
+        return A;
+    end Fusionne_2_Premiers;
+    
+    
 	-- Lit un arbre stocke dans un flux ouvert en lecture
 	-- Le format de stockage est celui decrit dans le sujet
 --	function Lit_Huffman(Flux : Ada.Streams.Stream_IO.Stream_Access)

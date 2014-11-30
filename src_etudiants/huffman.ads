@@ -1,12 +1,11 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with File_Priorite;
 --with dico; use dico;
 --with Code; use Code;
 
 -- paquetage representant un arbre de Huffman de caracteres
 
 package Huffman is
-
-    
 
     type Arbre is private;
 	type Arbre_Huffman is record
@@ -17,6 +16,11 @@ package Huffman is
 		-- A completer selon vos besoins!
 	end record;
 
+    function Est_Prioritaire(P1, P2 : Integer) return Boolean;
+
+    package FP is new File_Priorite(Arbre, Natural, Est_Prioritaire);
+    use FP;
+    
 	-- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.
 --	procedure Libere(H : in out Arbre_Huffman);
@@ -86,6 +90,10 @@ package Huffman is
     function GetData(A : Arbre) return Character;
 -- #########################################################
 
+    --Fusionne les deux éléments les plus prioritaires et place la fusion dans la file de Priorité
+	function Fusionne_2_Premiers(F : File_Prio) return Arbre;
+
+    function Est_Vide (A : in Arbre) return Boolean;
 
 -- #########################################################
      -- FONCTIONS LIEES A LA DECOMPRESSION

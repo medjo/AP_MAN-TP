@@ -14,7 +14,8 @@ package Compression is
 
     procedure Creation_Arbre_Huff(Tab_Occ : in Tab_Char ; Nb_Prio : in Integer ; Nb_Carac : out Natural ; A : in out Arbre);
 
-    --Fusionne les deux éléments les plus prioritaires et place la fusion dans la file de Priorité
-    function Fusionne_2_Premiers(F : File_Prio) return Arbre;
+--DANS PACKAGE HUFFMAN : 
+--    --Fusionne les deux éléments les plus prioritaires et place la fusion dans la file de Priorité
+--    function Fusionne_2_Premiers(F : File_Prio) return Arbre;
 
 end Compression;
