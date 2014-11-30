@@ -2,13 +2,6 @@ with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 with Ada.Text_Io; use Ada.Text_Io;
 
 package body decompression is
-
-    function Est_Prioritaire(P1, P2 : Integer) return Boolean is
-    begin
-        return P1 <= P2;
-    end;
-    
-
 	
 	-- Lit un arbre stocke dans un flux ouvert en lecture
 	-- Le format de stockage est celui decrit dans le sujet

@@ -1,12 +1,6 @@
 with huffman; use huffman;
-with File_Priorite;
 
 package Compression is
-
-    function Est_Prioritaire(P1, P2 : Integer) return Boolean;
-
-    package FP is new File_Priorite(Arbre, Natural, Est_Prioritaire);
-    use FP;
 
     type Tab_Char is array (Integer range 0..255) of Integer;
 

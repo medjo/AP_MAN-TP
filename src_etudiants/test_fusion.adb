@@ -1,6 +1,6 @@
 with Ada.Text_Io; use Ada.Text_Io;
 with Huffman; use huffman;
-with Compression; use Compression; use Compression.FP;
+with Compression; use Compression; use Huffman.FP;
 
 
 procedure test_fusion is
