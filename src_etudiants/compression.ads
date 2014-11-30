@@ -1,4 +1,4 @@
-with huffman; use huffman;
+with huffman; use huffman; 
 
 package Compression is
 

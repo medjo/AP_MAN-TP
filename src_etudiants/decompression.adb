@@ -37,7 +37,7 @@ package body decompression is
 		while (NOT(Fin_Lecture_Huffman)) loop
 			Lire_Donnee(D.all);
 			Lire_Priorite(Prio);
-			Huffman.FP.Insere(F, D, Prio);
+			Huffman.FP.Insere(F, D, Prio); 
 		end loop;
 		
 		while (Huffman.FP.GetCapa(F) > 1) loop

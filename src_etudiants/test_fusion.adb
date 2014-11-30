@@ -17,7 +17,7 @@ begin
     Insere(F, Cree_P_Arbre('a'), 2);
     Insere(F, Cree_P_Arbre('!'), 5);
     Insere(F, Cree_P_Arbre('u'), 4);
-    I := 0;
+    I := 0; 
     Put(Integer'Image(GetCapa(F)));
     A.all := Fusionne_2_Premiers(F);
     Put(Integer'Image(GetCapa(F)));

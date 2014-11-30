@@ -16,4 +16,4 @@ package decompression is
 				Caractere_Trouve : out Boolean;
 				Caractere : out Character);
 				
-end decompression;
+end decompression; 

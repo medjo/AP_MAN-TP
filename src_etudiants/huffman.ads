@@ -98,7 +98,7 @@ package Huffman is
     function Est_Vide (A : in Arbre) return Boolean;
     
     procedure Cree_P_Arbre (P_Arb : in out P_Arbre);
-    function Cree_P_Arbre (Char : Character) return P_Arbre;
+    function Cree_P_Arbre (Char : Character) return P_Arbre; 
 
 -- #########################################################
      -- FONCTIONS LIEES A LA DECOMPRESSION

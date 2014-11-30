@@ -31,7 +31,7 @@ package body Huffman is
 		P.all := A;
 		return P;
 	end Cree_P_Arbre;
-	
+	 
     procedure Cree_Arbre( A : in out Arbre ) is
     begin
         A := new Noeud'(Data => Character'Val (0), others => null);
