@@ -1,5 +1,7 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 
 package body Compression is
 
@@ -8,8 +10,6 @@ package body Compression is
         return P1 <= P2;
     end;
     
-	type Octet is new Integer range 0 .. 255;
-	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
 
     --Lis le Fichier et compte le nombre d'occurences pour chaque charactère présent
     procedure Lecture_Fichier(Nom_Fichier_In : in String ; Tab_Occurrences : in out Tab_Char ; Nb_Prio : in out Integer) is
@@ -19,11 +19,14 @@ package body Compression is
     begin
 		Open(Fichier, In_File, Nom_Fichier_In);
 		Flux := Stream(Fichier);
+        Put(Character'Val(232));
         while not End_Of_File(Fichier) loop
 			C := Character'Input(Flux); 
-            --Put(C);
-            if Character'Pos(C) in Tab_Char'range then
-                Tab_Occurrences(Character'Pos(C)) := Tab_Occurrences(Character'Pos(C)) + 1;
+            Put(Character'pos(C));
+            new_Line;
+            --if Character'Pos(C) in Tab_Char'range then
+            if Character'pos(C) in Tab_Occurrences'range then
+                Tab_Occurrences(Character'pos(C)) := Tab_Occurrences(Character'pos(C)) + 1;
             else
                 Put("Tentative d'écriture en dehors du tableau");
             end if;
@@ -42,8 +45,6 @@ package body Compression is
 
         F : File_Prio;
         I : Integer := 0;
-        A1 : Arbre;
-        A2 : Arbre;
     begin
         F := Cree_File(Nb_Prio);
         for I in Tab_Occ'range loop
@@ -52,7 +53,7 @@ package body Compression is
             end if;
         end loop;
         while GetCapa(F) > 1 loop
-            A1 := Fusionne_2_Premiers(F);
+            A := Fusionne_2_Premiers(F);
         end loop;
         Nb_Carac := GetPrio(F, 1);
     end Creation_Arbre_Huff;

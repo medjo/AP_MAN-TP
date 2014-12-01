@@ -8,6 +8,9 @@ package Compression is
     package FP is new File_Priorite(Arbre, Natural, Est_Prioritaire);
     use FP;
 
+	type Octet is new Integer range 0 .. 255;
+	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
+
     type Tab_Char is array (Integer range 0..255) of Integer;
 
     procedure Lecture_Fichier(Nom_Fichier_In : in String ; Tab_Occurrences : in out Tab_Char ; Nb_Prio : in out Integer);

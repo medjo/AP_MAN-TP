@@ -11,11 +11,11 @@ package body File_Priorite is
 			Prio : Priorite;
 		end record;
 					
-	type Table is array (Positive range <>) of Element;
+	type Table is array (Natural range <>) of Element;
 	
 	type File_Interne(Taille : Positive) is 
 		record
-			Tab : Table(1 .. Taille);
+			Tab : Table(0 .. Taille);
             Capacite : Integer := 0;
 		end record;
 	

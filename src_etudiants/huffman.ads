@@ -1,6 +1,6 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
---with dico; use dico;
---with Code; use Code;
+with dico; use dico;
+with Code; use Code;
 
 -- paquetage representant un arbre de Huffman de caracteres
 
@@ -45,9 +45,10 @@ package Huffman is
 	-- Retourne un dictionnaire contenant les caracteres presents
 	-- dans l'arbre et leur code binaire (evite les parcours multiples)
 	-- de l'arbre
---	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres;
+	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres;
 
 
+    procedure Genere_Codes(A : Arbre ; C : in out Code_Binaire ; D : in out Dico_Caracteres);
 
 ------ Parcours de l'arbre (decodage)
 

@@ -6,10 +6,26 @@
 --   -> si L non vide et Der la cellule contenant le dernier element,
 --      alors Der.Suiv = null
 -- ***************************************************************************
+generic
 
-package listes is
+	type Element is private;
+	
+	--with procedure Affiche_Element(El : Element);
+	
+package Listes is
 
-	type Liste is private;
+    type Cellule;
+
+	type Liste is access Cellule;
+
+	--a partir de ce type on peut faire diverse hypotheses sur la facon
+	-- dont la liste est representee, notamment en ce qui concerne la
+	-- liste vide
+	type Cellule is record
+		Val: Element;
+		Suiv: Liste;
+	end record;
+	
 
 	-- exceptions levees par ce package
 	Erreur_Liste_Vide : Exception;
@@ -32,13 +48,13 @@ package listes is
 	function Est_Vide (L: in Liste) return Boolean;
 
 	-- insertion d'un element V en tete de liste
-	procedure Insere_Tete (V: Integer; L: in out Liste);
+	procedure Insere_Tete (V: Element; L: in out Liste);
 
 	-- affichage de la liste, dans l'ordre de parcours
-	procedure Affiche (L: in Liste);
+	--procedure Affiche (L: in Liste);
 
 	-- recherche sequentielle d'un element dans la liste
-	function Est_Present (V: Integer; L: Liste) return Boolean;
+	function Est_Present (V: Element; L: Liste) return Boolean;
 
 
 -- BLOC 2:
@@ -46,21 +62,21 @@ package listes is
 	procedure Vide (L: in out Liste);
 
 	-- insertion d'un element V en queue de liste
-	procedure Insere_Queue (V: Integer; L: in out Liste);
+	procedure Insere_Queue (V: Element; L: in out Liste);
 	
 -- BLOC 3:
 
 	-- suppression de l'element en tete de liste
-	procedure Supprime_Tete (L: in out Liste; V: out Integer);
+	procedure Supprime_Tete (L: in out Liste; V: out Element);
 	
 	-- suppression l'element en queue de liste
-	procedure Supprime_Queue (L: in out Liste; V: out Integer);
+	procedure Supprime_Queue (L: in out Liste; V: out Element);
 	
 	-- suppression de la premiere occurence de V dans la liste
-	procedure Supprime_Premiere_Occurence (V: Integer; L: in out Liste);
+	procedure Supprime_Premiere_Occurence (V: Element; L: in out Liste);
 
 	-- suppression de toutes les occurences de V de la liste
-	procedure Supprime (V: Integer; L: in out Liste);
+	procedure Supprime (V: Element; L: in out Liste);
 
 -- BLOC 4: on ne reviendra pas dessus en cours, mais a finir pour vous!
 
@@ -68,10 +84,7 @@ package listes is
 	-- (sans allocation et en temps lineaire)
 	procedure Inverse (L: in out Liste);
 
-	procedure Tri_Insertion (L: in out Liste);
-private 	
-	-- type Cellule prive: a definir dans le body du package, listes.adb
-	type Cellule;	
-	type Liste is access Cellule;
-end listes;
+
+
+end Listes;
 

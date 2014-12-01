@@ -1,6 +1,4 @@
-with huffman; use huffman;
 with Compression; use Compression;
-
 package body Huffman is
 
      type Noeud is
@@ -64,6 +62,28 @@ package body Huffman is
             AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
             return AH;
     end Cree_Huffman;
+
+	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
+        D : Dico_Caracteres := Cree_Dico;
+        C : Code_Binaire := Cree_Code;
+    begin
+        Genere_Codes(H.A, C, D);
+        return D;
+    end Genere_Dictionnaire;
+    
+    procedure Genere_Codes(A : Arbre; C : in out Code_Binaire ; D : in out Dico_Caracteres) is
+    begin
+        if A.Data = Character'Val(0) then
+            Genere_Codes(A.FilsG,
+            PFile.Enfiler(ZERO, 
+            Cree_Code(C)), D);
+            Genere_Codes(A.FilsD, PFile.Enfiler(UN, C), D);
+        else
+            D(Character'Pos(A.Data)) := C;
+        end if;
+
+    end Genere_Codes;
+
 
     -- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.

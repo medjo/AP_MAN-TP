@@ -29,7 +29,9 @@ begin
         Lecture_Fichier(Fichier, Tab_Occ, Nb_Prio);
         for I in Tab_Occ'range loop
             if Tab_Occ(I) /= 0 then
-                Put("Case n°"&Integer'Image(I)&"("&Character'Val(I)&")" & "     Occurrences : "&Integer'Image(Tab_Occ(I)));
+                Put("Case n°");
+                Put(I);
+                Put("("&Character'Val(I)&")" & "     Occurrences : "&Integer'Image(Tab_Occ(I)));
                 new_Line;
                 Sum := Sum + Tab_Occ(I);
             end if;

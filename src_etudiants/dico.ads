@@ -7,10 +7,10 @@ with Ada.Streams.Stream_IO;
 package Dico is
 
 	-- Informations associees a un caractere
-	type Info_Caractere is record
-		Code : Code_Binaire;
+--	type Info_Caractere is record
+--		Code : Code_Binaire;
 		-- A modifier/completer selon les besoins!
-	end record;
+--	end record;
 
 	-- La structure du dictionnaire lui-meme, privee
 	type Dico_Caracteres is private;
@@ -22,11 +22,11 @@ package Dico is
 
 	-- Libere le dictionnaire D
 	-- garantit: en sortie toute la memoire a ete libere, et D = null.
-	procedure Libere(D : in out Dico_Caracteres);
+--	procedure Libere(D : in out Dico_Caracteres);
 	
 	-- Affiche pour chaque caractere: son nombre d'occurences et son code
 	-- (s'il a ete genere)
-	procedure Affiche(D : in Dico_Caracteres);
+--	procedure Affiche(D : in Dico_Caracteres);
 	
 	
 -- Ajouts d'informations dans le dictionnaire
@@ -37,35 +37,35 @@ package Dico is
 
 	-- Associe les infos associees a un caractere
 	-- (operation plus generale, si necessaire)
-	procedure Set_Infos(C : in Character;
-	                    Infos : in Info_Caractere;
-	                    D : in out Dico_Caracteres);
+--	procedure Set_Infos(C : in Character;
+--	                    Infos : in Info_Caractere;
+--	                    D : in out Dico_Caracteres);
 
 -- Acces aux informations sur un caractere
 
 	-- retourne True sur le caractere C est present dans le D
-	function Est_Present(C : Character; D : Dico_Caracteres)
-		return Boolean;
+--	function Est_Present(C : Character; D : Dico_Caracteres)
+--		return Boolean;
 
 	-- Retourne le code binaire d'un caractere
 	--  -> leve l'exception Caractere_Absent si C n'est pas dans D
-	function Get_Code(C : Character; D : Dico_Caracteres)
-	         return Code_Binaire;
+--	function Get_Code(C : Character; D : Dico_Caracteres)
+--	         return Code_Binaire;
 
 	-- Retourne les infos associees a un caractere
 	--  -> leve l'exception Caractere_Absent si C n'est pas dans D
-	function Get_Infos(C : Character; D : Dico_Caracteres)
-	         return Info_Caractere;
+--	function Get_Infos(C : Character; D : Dico_Caracteres)
+--	         return Info_Caractere;
 
 
 -- Statistiques sur le dictionnaire (au besoin)
 
 	-- Retourne le nombre de caracteres differents dans D
-	function Nb_Caracteres_Differents(D : in Dico_Caracteres) return Natural;
+--	function Nb_Caracteres_Differents(D : in Dico_Caracteres) return Natural;
 
 	-- Retourne le nombre total de caracteres
 	--  =  somme des nombre d'occurences de tous les caracteres de D
-	function Nb_Total_Caracteres(D : in Dico_Caracteres) return Natural;
+--	function Nb_Total_Caracteres(D : in Dico_Caracteres) return Natural;
 
 
 private 

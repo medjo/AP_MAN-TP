@@ -1,18 +1,10 @@
 with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Unchecked_Deallocation;
-with file_priorite; use file_priorite;
 
-package body listes is
 
-	-- a partir de ce type on peut faire diverse hypotheses sur la facon
-	-- dont la liste est representee, notamment en ce qui concerne la
-	-- liste vide
-	type Cellule is record
-		Prio : Priorite;
-        Val : Donnee;
-		Suiv: Liste;
-	end record;
+package body Listes is
+
 
 	-- Procedure de liberation d'une Cellule (accedee par Liste)
 	procedure Liberer is new Ada.Unchecked_Deallocation (Cellule, Liste);
@@ -41,32 +33,32 @@ package body listes is
 	end Est_Vide;
 
 	-- insertion d'un element V en tete de liste
-	procedure Insere_Tete (V: Integer; L: in out Liste) is
+	procedure Insere_Tete (V: Element; L: in out Liste) is
 	begin
         L := new Cellule'(Val => V, Suiv => L);
 	end Insere_Tete;
 
 
 	-- affichage de la liste, dans l'ordre de parcours
-	procedure Affiche (L: in Liste) is 
-        Browse : Liste := L;
-	begin
-        New_Line;
-        New_Line;
-        Put("La liste vaut :");
-        New_Line;
-        while not Est_Vide(Browse)loop
-            Put(Integer'Image(Browse.all.Val));
-            New_Line;
-            Browse := Browse.all.Suiv;
-        end loop;
+--	procedure Affiche (L: in Liste) is 
+ --       Browse : Liste := L;
+--	begin
+--        New_Line;
+--        New_Line;
+--        Put("La liste vaut :");
+--        New_Line;
+--        while not Est_Vide(Browse)loop
+--            Affiche_Element(Browse.all.Val);
+--            New_Line;
+--            Browse := Browse.all.Suiv;
+--        end loop;
             --Put(Integer'Image(Browse.all.Val));
-            New_Line;
-	end Affiche;
+--            New_Line;
+	--end Affiche;
 
 
 	-- recherche sequentielle d'un element dans la liste
-	function Est_Present (V: Integer; L: Liste) return Boolean is
+	function Est_Present (V: Element; L: Liste) return Boolean is
         Browse : Liste := L;
 	begin
         while not Est_Vide(Browse)loop
@@ -95,7 +87,7 @@ package body listes is
 
 
 	-- insertion d'un element V en queue de liste
-	procedure Insere_Queue (V: Integer; L: in out Liste) is
+	procedure Insere_Queue (V: Element; L: in out Liste) is
         Browse : Liste := L;
 	begin
         if Est_Vide(L) then
@@ -112,7 +104,7 @@ package body listes is
 -- BLOC 3:
 
 	-- suppression de l'element en tete de liste
-	procedure Supprime_Tete (L: in out Liste; V : out Integer) is
+	procedure Supprime_Tete (L: in out Liste; V : out Element) is
         Temp : Liste;
 	begin
         if Est_Vide(L) then
@@ -126,7 +118,7 @@ package body listes is
 	end Supprime_Tete;
 	
 	-- suppression l'element en queue de listes 
-	procedure Supprime_Queue (L: in out Liste; V: out Integer) is
+	procedure Supprime_Queue (L: in out Liste; V: out Element) is
         Browse : Liste := L;
         Browse2 : Liste := L;
 	begin
@@ -147,15 +139,15 @@ package body listes is
 	
 	
 	-- suppression de la premiere occurence de V dans la liste
-	procedure Supprime_Premiere_Occurence (V: Integer; L: in out Liste) is
+	procedure Supprime_Premiere_Occurence (V: Element; L: in out Liste) is
 	begin
 -- STUB, A REMPLACER PAR VOTRE CODE!		
 		null;
 	end Supprime_Premiere_Occurence;
 
 	-- suppression de toutes les occurences de V de la liste
-	procedure Supprime (V: Integer; L: in out Liste) is
-        Fict : Liste := new Cellule'( Val => 0 , Suiv => null);
+	procedure Supprime (V: Element; L: in out Liste) is
+        Fict : Liste := new Cellule'( Val => V , Suiv => null);
         Browse : Liste;
         Temp : Liste;
 	begin
@@ -189,55 +181,4 @@ package body listes is
 
 
 ------------------------------------------------------------------------------
--- BLOC 5:
-
-	-- Tri par insertion d'une liste chaînée
-	-- (sans allocation) avec 2 listes
-	procedure Tri_Insertion (L: in out Liste) is
-        L2 : Liste := null;
-        Prev : Liste := L2;
-        procedure Tri(L2 : in Liste ; L : in out Liste) is
-            Check : Liste := L2;
-        begin
-            while not Est_Vide(Check) or else (Check.Val < L.Val) loop
-                Prev := Check;
-                Check := Check.Suiv;
-            end loop;
-            Prev.Suiv := L2;
-            L2.Suiv := Check;
-            L := L.Suiv;
-        end Tri;
-	begin
-        if Est_Vide(L) then
-            L2 := L;
-            L := L.Suiv;
-        end if;
-        while not Est_Vide(L) loop
-            Tri(L2, L);
-            L := L.Suiv;
-        end loop;
--- STUB, A REMPLACER PAR VOTRE CODE!		
-	end Tri_Insertion;
-
-	-- Tri par insertion d'une liste chaînée
-	-- (sans allocation) avec 1 liste
-    procedure Tri_Insertion_1L(L : in out Liste) is
-        Fict : Cellule;
-        Sorted_curr : Liste;
-        Last_sorted : Liste;
-        Storage : Liste;
-        begin
-            Fict.suiv := L;
-            L := Fict;
-            Sorted_curr := L;
-            while Last_sorted.suiv /= null lopp
-                if last_sorted.suiv.val < sorted_curr.suiv.val then
-                    storage := last_sorted.suiv;
-                    last_sorted.suiv := last_storage.suiv;
-                    storage.suiv := sorted_curr.suiv;
-                    sorted_curr := storage;
-            end loop;
-
-            L:= Fict.suiv;
-    end Tri_Insertion_1L;
-end listes;
+end Listes;
