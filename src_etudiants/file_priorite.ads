@@ -54,6 +54,14 @@ package File_Priorite is
 
     function GetCapa(F : in File_Prio ) return Integer;
 
+    procedure SetData(F : in out File_Prio ; D : Donnee ; I : Natural);
+
+
+    function GetData_File(F : in File_Prio ; I : Natural) return Donnee;
+
+    function GetFirst(F : File_Prio) return Natural;
+    function GetLast(F : File_Prio) return Natural;
+
 private
 	-- Le type File_Interne doit etre defini dans le corps du package
 	-- (file_priorite.adb)

@@ -1,5 +1,7 @@
 with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Command_Line; use Ada.Command_Line;
+with Huffman; use Huffman;
+with Dico; use Dico;
 
 
 procedure tp_huffman is
@@ -8,16 +10,14 @@ procedure tp_huffman is
 -- COMPRESSION
 ------------------------------------------------------------------------------
 
-
 	procedure Compresse(Nom_Fichier_In, Nom_Fichier_Out : in String) is
-    Tab_Occ : Tab_Char;
-    Nb_Prio : Integer;
     Huff : Arbre_Huffman;
+    D : Dico_Caracteres;
 	begin
 		-- A COMPLETER!
 
         Huff := Cree_Huffman(Nom_Fichier_In);
-		return;
+        D := Genere_Dictionnaire(Huff);
 	end Compresse;
 
 

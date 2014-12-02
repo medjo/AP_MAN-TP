@@ -15,7 +15,7 @@ package body File_Priorite is
 	
 	type File_Interne(Taille : Positive) is 
 		record
-			Tab : Table(0 .. Taille);
+			Tab : Table(1 .. Taille);
             Capacite : Integer := 0;
 		end record;
 	
@@ -34,7 +34,7 @@ package body File_Priorite is
 	
 	function Est_Vide(F: in File_Prio) return Boolean is
 	begin
-		return (F.Capacite = 0 or else F = NULL);
+		return (F = NULL or else F.Capacite = 0 );
 	end Est_Vide;
 	
 	function Est_Pleine(F: in File_Prio) return Boolean is
@@ -140,5 +140,25 @@ package body File_Priorite is
     begin
         return F.Capacite;
     end GetCapa;
+
+    procedure SetData(F : in out File_Prio ; D : Donnee ; I : Natural) is
+    begin
+        F.all.Tab(I).Data := D;
+    end SetData;
+
+    function GetFirst(F : File_Prio) return Natural is
+    begin
+        return F.Tab'First;
+    end GetFirst;
+
+    function GetLast(F : File_Prio) return Natural is
+    begin
+        return F.Tab'Last;
+    end GetLast;
+    
+    function GetData_File(F : in File_Prio ; I : Natural) return Donnee is
+    begin
+        return F.Tab(I).Data;
+    end GetData_File;
 
 end File_Priorite;

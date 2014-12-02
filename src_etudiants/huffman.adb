@@ -8,9 +8,16 @@ package body Huffman is
             FilsD : Arbre ;
 		end record;
    
+    function Cree_Arbre return Arbre is
+        A : Arbre;
+    begin
+        A := new Noeud'(Data => Character'Val(0), others => null);
+        return A;
+    end Cree_Arbre;
+
     procedure Cree_Arbre( A : in out Arbre ) is
     begin
-        A := new Noeud'(Data => Character'Val (0), others => null);
+        A := new Noeud'(Data => Character'Val(0), others => null);
     end Cree_Arbre;
 
     function Cree_Arbre(Char : Character) return Arbre is
@@ -20,10 +27,15 @@ package body Huffman is
         return A;
     end Cree_Arbre;
 
-    function GetData(A : Arbre) return Character is
+    function GetData_Arbre(A : Arbre) return Character is
     begin
         return A.Data;
-    end GetData;
+    end GetData_Arbre;
+
+    procedure SetData_Arbre(A : in out Arbre ; D : Character ) is
+    begin
+        A.Data := D;
+    end SetData_Arbre;
 
     function GetFilsG(A : Arbre) return Arbre is
     begin
@@ -34,6 +46,18 @@ package body Huffman is
         return A.FilsD;
     end GetFilsD;
 
+    --Affiche les élements d'un arbres
+    procedure Affiche_Arbre(A : Arbre) is
+    begin
+        if A /= null then
+            Put(A.Data);
+            new_Line;
+            Affiche_Arbre(A.FilsG);
+            Affiche_Arbre(A.FilsD);
+        else
+            Put_Line("Vide !");
+        end if;
+    end Affiche_Arbre;
 
     procedure SetFilsG(A : in out Arbre ; Fils : in Arbre ) is
     begin
@@ -56,11 +80,11 @@ package body Huffman is
         AH : Arbre_Huffman;
         Nb_Total_Caracteres : Natural;
     begin 
-            Lecture_Fichier(Nom_Fichier, Tab_Occ, Nb_Prio);
-            Creation_Arbre_Huff(Tab_Occ , Nb_Prio, Nb_Total_Caracteres, A);
-            AH.A := A;
-            AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
-            return AH;
+        Lecture_Fichier(Nom_Fichier, Tab_Occ, Nb_Prio);
+        Creation_Arbre_Huff(Tab_Occ , Nb_Prio, Nb_Total_Caracteres, A);
+        AH.A := A;
+        AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
+        return AH;
     end Cree_Huffman;
 
 	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
@@ -74,6 +98,10 @@ package body Huffman is
     procedure Genere_Codes(A : Arbre; C : in out Code_Binaire ; D : in out Dico_Caracteres) is
         C2 : Code_Binaire;
     begin
+        if A = null then
+            new_Line;
+            Put_Line("[huffman.adb] Tentative de lecture d'un Arbre Vide !");
+        end if;
         if A.Data = Character'Val(0) then
             C2 := Cree_Code(C);
             Enfiler(ZERO, C2);
@@ -85,7 +113,6 @@ package body Huffman is
         end if;
 
     end Genere_Codes;
-
 
     -- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.

@@ -1,4 +1,6 @@
 with code; use code;
+with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Ada.Streams.Stream_IO; 
 
 -- Dictionnaire dont les cles sont des caracteres, et les valeurs
@@ -26,7 +28,7 @@ package Dico is
 	
 	-- Affiche pour chaque caractere: son nombre d'occurences et son code
 	-- (s'il a ete genere)
---	procedure Affiche(D : in Dico_Caracteres);
+	procedure Affiche_Dico(D : in Dico_Caracteres);
 	
 	
 -- Ajouts d'informations dans le dictionnaire

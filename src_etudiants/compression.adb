@@ -7,7 +7,7 @@ package body Compression is
 
     function Est_Prioritaire(P1, P2 : Integer) return Boolean is
     begin
-        return P1 <= P2;
+        return P1 < P2;
     end;
     
 
@@ -17,14 +17,11 @@ package body Compression is
 		Flux : Ada.Streams.Stream_IO.Stream_Access;
 		C : Character;
     begin
+        Init_Tab(Tab_Occurrences);
 		Open(Fichier, In_File, Nom_Fichier_In);
 		Flux := Stream(Fichier);
-        Put(Character'Val(232));
         while not End_Of_File(Fichier) loop
 			C := Character'Input(Flux); 
-            Put(Character'pos(C));
-            new_Line;
-            --if Character'Pos(C) in Tab_Char'range then
             if Character'pos(C) in Tab_Occurrences'range then
                 Tab_Occurrences(Character'pos(C)) := Tab_Occurrences(Character'pos(C)) + 1;
             else
@@ -47,6 +44,7 @@ package body Compression is
         I : Integer := 0;
     begin
         F := Cree_File(Nb_Prio);
+        Init_File(F);
         for I in Tab_Occ'range loop
             if Tab_Occ(I) /= 0 then
                 Insere(F, Cree_Arbre(Character'Val(I)), Tab_Occ(I));
@@ -66,14 +64,46 @@ package body Compression is
         Prio2 : Integer;
     begin
         Cree_Arbre(A);
-        Cree_Arbre(Fils);
+        
+        Put("Fusion :");
+        new_Line;
+
         Supprime(F, Fils, Prio1);
+        Put("Fils1 :"&Character'Image(GetData_Arbre(Fils)));
+        new_Line;
+
         SetFilsG(A, Fils);
-        Cree_Arbre(Fils);
         Supprime(F, Fils, Prio2);
+        Put("Fils2 :"&Character'Image(GetData_Arbre(Fils)));
+        new_Line;
         SetFilsD(A, Fils);
         Insere(F, A, Prio1 + Prio2);
+        Put("Père :"&Character'Image(GetData_Arbre(A)));
+        new_Line;
+        Put("FilsG :"&Character'Image(GetData_Arbre(GetFilsG(A))));
+        new_Line;
+        Put("FilsD :"&Character'Image(GetData_Arbre(GetFilsD(A))));
+        new_Line;
+        new_Line;
+        Put("Valeur de A.Data : ");
+        Put(GetData_Arbre(A));
         return A;
     end Fusionne_2_Premiers;
+
+    procedure Init_File(F : in out File_Prio) is
+        I : Natural := GetFirst(F);
+    begin
+        while I <= GetLast(F) loop
+            SetData(F, Cree_Arbre, I);
+            I := I + 1;
+        end loop;
+    end Init_File;
+
+    procedure Init_Tab(T : in out Tab_Char) is
+    begin
+        for I in T'range loop
+            T(I) := 0;
+        end loop;
+    end Init_Tab;
 
 end Compression;

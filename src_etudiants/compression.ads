@@ -20,4 +20,8 @@ package Compression is
     --Fusionne les deux éléments les plus prioritaires et place la fusion dans la file de Priorité
     function Fusionne_2_Premiers(F : File_Prio) return Arbre;
 
+    procedure Init_File(F : in out File_Prio);
+
+    procedure Init_Tab(T : in out Tab_Char);
+
 end Compression;

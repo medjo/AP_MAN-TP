@@ -16,5 +16,19 @@ package body Dico is
         D.all(Character'Pos(C)) := Code; 
     end Set_Code;
 
+	-- Affiche pour chaque caractere: son nombre d'occurences et son code
+	-- (s'il a ete genere)
+	procedure Affiche_Dico(D : in Dico_Caracteres) is
+    begin
+        for I in D.all'range loop
+            if not Est_Vide_Code(D.all(I)) then
+                Put("Caractère : ");
+                Put(Character'Val(I));
+                Put("              Code : ");
+                Affiche_Code(D.all(I));
+                new_Line;
+            end if;
+        end loop;
+    end Affiche_Dico;
 
 end Dico;

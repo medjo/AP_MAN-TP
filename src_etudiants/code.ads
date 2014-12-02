@@ -2,6 +2,8 @@
 -- D'autres operations peuvent etre ajoutees si necessaire, et 
 -- toutes ne vous seront pas forcement utiles...
 
+with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
+with Ada.Text_Io; use Ada.Text_Io;
 with Listes.File;
 
 package Code is
@@ -38,7 +40,10 @@ package Code is
 --	function Longueur(C : in Code_Binaire) return Natural;
 
 	-- Affiche un code
---	procedure Affiche(C : in Code_Binaire);
+	procedure Affiche_Code(C : in Code_Binaire);
+
+    --Retourne true si le code est vide
+    function Est_Vide_Code(C : Code_Binaire) return Boolean;
 
 	-- Ajoute le bit B en tete du code C
 --	procedure Ajoute_Avant(B : in Bit; C : in out Code_Binaire);

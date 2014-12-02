@@ -30,4 +30,19 @@ package body Code is
     begin
         PFile.Enfiler(V, C.all);
     end Enfiler;
+
+	procedure Affiche_Code(C : in Code_Binaire) is
+        Browse : File := C.all;
+	begin
+        while not PFile.Est_Vide(Browse)loop
+            Put(Browse.all.Val);
+            Browse := Browse.all.Suiv;
+        end loop;
+	end Affiche_Code;
+
+    function Est_Vide_Code(C : Code_Binaire) return Boolean is
+    begin
+        return PFile.Est_Vide(C.all);
+    end Est_Vide_Code;
+
 end Code;

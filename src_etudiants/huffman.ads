@@ -1,4 +1,5 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with Ada.Text_Io; use Ada.Text_Io;
 with Dico; use Dico;
 with Code; use Code;
 
@@ -84,7 +85,12 @@ package Huffman is
 
     procedure Cree_Arbre(A : in out Arbre);
 
-    function GetData(A : Arbre) return Character;
+    function Cree_Arbre return Arbre;
+
+    function GetData_Arbre(A : Arbre) return Character;
+    procedure SetData_Arbre(A : in out Arbre ; D : Character );
+
+    procedure Affiche_Arbre(A : Arbre);
 -- #########################################################
 
 
