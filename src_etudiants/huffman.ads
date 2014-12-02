@@ -1,5 +1,5 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
-with dico; use dico;
+with Dico; use Dico;
 with Code; use Code;
 
 -- paquetage representant un arbre de Huffman de caracteres

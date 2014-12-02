@@ -28,6 +28,9 @@ package Code is
 	function Cree_Code(C : in Code_Binaire) return Code_Binaire;
 
 
+	-- insertion d'un element V en tete de liste
+	procedure Enfiler(V: Bit; C: in out Code_Binaire);
+
 	-- Libere un code
 --	procedure Libere_Code(C : in out Code_Binaire);
 	

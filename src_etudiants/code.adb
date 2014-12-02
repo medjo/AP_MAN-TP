@@ -26,4 +26,8 @@ package body Code is
         return C2;
     end Cree_Code;
 
+	procedure Enfiler(V: Bit; C: in out Code_Binaire) is
+    begin
+        PFile.Enfiler(V, C.all);
+    end Enfiler;
 end Code;

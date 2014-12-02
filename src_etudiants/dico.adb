@@ -11,7 +11,10 @@ package body Dico is
     end Cree_Dico;
 
 
-	procedure Set_Code(C : in Character; Code : in Code_Binaire; D : in out Dico_Caracteres)
+	procedure Set_Code(C : in Character; Code : in Code_Binaire; D : in out Dico_Caracteres) is
+    begin
+        D.all(Character'Pos(C)) := Code; 
+    end Set_Code;
 
 
 end Dico;

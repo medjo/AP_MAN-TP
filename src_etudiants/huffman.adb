@@ -72,14 +72,16 @@ package body Huffman is
     end Genere_Dictionnaire;
     
     procedure Genere_Codes(A : Arbre; C : in out Code_Binaire ; D : in out Dico_Caracteres) is
+        C2 : Code_Binaire;
     begin
         if A.Data = Character'Val(0) then
-            Genere_Codes(A.FilsG,
-            PFile.Enfiler(ZERO, 
-            Cree_Code(C)), D);
-            Genere_Codes(A.FilsD, PFile.Enfiler(UN, C), D);
+            C2 := Cree_Code(C);
+            Enfiler(ZERO, C2);
+            Genere_Codes(A.FilsG, C2, D);
+            Enfiler(UN, C);
+            Genere_Codes(A.FilsD, C, D);
         else
-            D(Character'Pos(A.Data)) := C;
+            Set_Code(A.Data, C, D);
         end if;
 
     end Genere_Codes;
