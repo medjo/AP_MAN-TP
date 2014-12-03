@@ -2,6 +2,8 @@ with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Command_Line; use Ada.Command_Line;
 with Huffman; use Huffman;
 with Dico; use Dico;
+with Compression; use Compression;
+with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 
 
 procedure tp_huffman is
@@ -13,11 +15,18 @@ procedure tp_huffman is
 	procedure Compresse(Nom_Fichier_In, Nom_Fichier_Out : in String) is
     Huff : Arbre_Huffman;
     D : Dico_Caracteres;
+    Nb_Octets_Ecrits : Natural;
+    Fichier : Ada.Streams.Stream_IO.File_Type;
+    Flux : Ada.Streams.Stream_IO.Stream_Access;
 	begin
-		-- A COMPLETER!
-
         Huff := Cree_Huffman(Nom_Fichier_In);
         D := Genere_Dictionnaire(Huff);
+
+        Create(Fichier, Out_File, Nom_Fichier_Out);
+        Flux := Stream(Fichier);
+        Nb_Octets_Ecrits := Ecrit_Huffman(Huff, Flux, Nom_Fichier_In);
+        Close(Fichier);
+
 	end Compresse;
 
 

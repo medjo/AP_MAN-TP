@@ -75,16 +75,16 @@ package body Huffman is
 	-- et le retourne.
     function Cree_Huffman(Nom_Fichier : in String) return Arbre_Huffman is
 
-        Tab_Occ : Tab_Char;
         Nb_Prio : Integer := 0;
         A : Arbre;
         AH : Arbre_Huffman;
         Nb_Total_Caracteres : Natural;
     begin 
-        Lecture_Fichier(Nom_Fichier, Tab_Occ, Nb_Prio);
-        Creation_Arbre_Huff(Tab_Occ , Nb_Prio, Nb_Total_Caracteres, A);
+        Lecture_Fichier(Nom_Fichier, AH.Tab_Occ, Nb_Prio);
+        Creation_Arbre_Huff(AH.Tab_Occ , Nb_Prio, Nb_Total_Caracteres, A);
         AH.A := A;
         AH.Nb_Total_Caracteres := Nb_Total_Caracteres;
+        AH.Nb_Prio := Nb_Prio;
         return AH;
     end Cree_Huffman;
 
@@ -111,36 +111,12 @@ package body Huffman is
                 C := Cree_Code;
             end if;
             Enfiler(ZERO, C2);
-            
-
-            Put("A.Data : ");
-            Put(A.Data);
-            new_Line;
-            Put("Code fils gauche");
-            Affiche_Code(C2);
-
             Genere_Codes(A.FilsG, C2, D);
             Enfiler(UN, C);
-
-            Put("A.Data : ");
-            Put(A.Data);
-            new_Line;
-            Put("Code fils droit");
-            Affiche_Code(C);
-
             Genere_Codes(A.FilsD, C, D);
         else
             Set_Code(A.Data, C, D);
-
-            Put("A.Data : ");
-            Put(A.Data);
-            new_Line;
-            Put("Code de feuille");
-            Affiche_Code(C);
-            new_Line;
-            new_Line;
         end if;
-
     end Genere_Codes;
     
 	function Est_Vide (A : Arbre) return Boolean is
@@ -174,14 +150,37 @@ package body Huffman is
     -- Stocke un arbre dans un flux ouvert en ecriture
 	-- Le format de stockage est celui decrit dans le sujet
 	-- Retourne le nb d'octets ecrits dans le flux (pour les stats)
---	function Ecrit_Huffman(H : in Arbre_Huffman;
---	                        Flux : Ada.Streams.Stream_IO.Stream_Access)
---		return Positive is
---    begin
-        -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
- --       null;
---        return H;
---    end Ecrit_Huffman;
+    function Ecrit_Huffman(H : in Arbre_Huffman;
+        Flux_Out : Ada.Streams.Stream_IO.Stream_Access ; Nom_Fichier_In : String)
+        return Natural is
+        Nb_Octets_Ecrits : Natural := 0;
+	    Fichier : Ada.Streams.Stream_IO.File_Type;
+		Flux_In : Ada.Streams.Stream_IO.Stream_Access;
+		C : Character;
+        O : Octet;
+    begin
+        Open(Fichier, In_File, Nom_Fichier_In);
+        Flux_In := Stream(Fichier);
+
+        --1er Octet du Fichier : le nombre de caractère différents présents dans le texte.
+        O := Octet(H.Nb_Prio);
+        Octet'Output(Flux_Out, O);
+
+        for I in H.Tab_Occ'range loop
+            if H.Tab_Occ(I) /= 0 then
+                O := Octet(I);
+                Octet'Output(Flux_Out, O);
+
+            end if;
+        end loop;
+
+
+        while not End_Of_File(Fichier) loop
+            C := Character'Input(Flux_In); 
+        end loop;
+        Close(Fichier);
+        return Nb_Octets_Ecrits;
+    end Ecrit_Huffman;
 
 	-- Lit un arbre stocke dans un flux ouvert en lecture
 	-- Le format de stockage est celui decrit dans le sujet

@@ -8,6 +8,7 @@ with Code; use Code;
 package Huffman is
 
     
+    type Tab_Char is array (Integer range 0..255) of Integer;
 
     type Arbre is private;
 	type Arbre_Huffman is record
@@ -15,6 +16,8 @@ package Huffman is
 		A : Arbre;           
 		-- autres infos utiles: nb total de caracteres lus, ...
 		Nb_Total_Caracteres : Natural;
+        Tab_Occ : Tab_Char;
+        Nb_Prio : Integer;
 		-- A completer selon vos besoins!
 	end record;
 
@@ -33,9 +36,9 @@ package Huffman is
 	-- Stocke un arbre dans un flux ouvert en ecriture
 	-- Le format de stockage est celui decrit dans le sujet
 	-- Retourne le nb d'octets ecrits dans le flux (pour les stats)
---	function Ecrit_Huffman(H : in Arbre_Huffman;
---	                        Flux : Ada.Streams.Stream_IO.Stream_Access)
---		return Positive;
+    function Ecrit_Huffman(H : in Arbre_Huffman;
+        Flux_Out : Ada.Streams.Stream_IO.Stream_Access ; Nom_Fichier_In : String)
+        return Natural;
 
 	-- Lit un arbre stocke dans un flux ouvert en lecture
 	-- Le format de stockage est celui decrit dans le sujet

@@ -3,6 +3,7 @@ with File_Priorite;
 
 package Compression is
 
+
     function Est_Prioritaire(P1, P2 : Integer) return Boolean;
 
     package FP is new File_Priorite(Arbre, Natural, Est_Prioritaire);
@@ -11,7 +12,6 @@ package Compression is
 	type Octet is new Integer range 0 .. 255;
 	for Octet'Size use 8; -- permet d'utiliser Octet'Input et Octet'Output,
 
-    type Tab_Char is array (Integer range 0..255) of Integer;
 
     procedure Lecture_Fichier(Nom_Fichier_In : in String ; Tab_Occurrences : in out Tab_Char ; Nb_Prio : in out Integer);
 

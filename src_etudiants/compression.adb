@@ -34,6 +34,7 @@ package body Compression is
                 Nb_Prio := Nb_Prio + 1;
             end if;
         end loop;
+        Close(Fichier);
         return;
     end Lecture_Fichier;
     
