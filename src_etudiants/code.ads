@@ -45,6 +45,11 @@ package Code is
     --Retourne true si le code est vide
     function Est_Vide_Code(C : Code_Binaire) return Boolean;
 
+
+    function Est_Null(C : Code_Binaire) return Boolean;
+
+    function Declare_Code return Code_Binaire;
+
 	-- Ajoute le bit B en tete du code C
 --	procedure Ajoute_Avant(B : in Bit; C : in out Code_Binaire);
 

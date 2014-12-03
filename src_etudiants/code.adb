@@ -6,6 +6,10 @@ package body Code is
 
     
 
+    function Declare_Code return Code_Binaire is
+    begin
+        return null;
+    end Declare_Code;
 
 	function Cree_Code return Code_Binaire is
         C : Code_Binaire; 
@@ -20,7 +24,7 @@ package body Code is
     begin
         tmp := C.all;
         while not PFile.Est_Vide(tmp) loop
-            PFile.Insere_Queue(tmp.val, C2.all);
+            PFile.Enfiler(tmp.val, C2.all);
             tmp := tmp.all.suiv;
         end loop;
         return C2;
@@ -45,4 +49,8 @@ package body Code is
         return PFile.Est_Vide(C.all);
     end Est_Vide_Code;
 
+    function Est_Null(C : Code_Binaire) return Boolean is
+    begin
+        return C = null;
+    end Est_Null;
 end Code;

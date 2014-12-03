@@ -50,6 +50,7 @@ package body Huffman is
     procedure Affiche_Arbre(A : Arbre) is
     begin
         if A /= null then
+            Put("A.Data : ");
             Put(A.Data);
             new_Line;
             Affiche_Arbre(A.FilsG);
@@ -89,7 +90,7 @@ package body Huffman is
 
 	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
         D : Dico_Caracteres := Cree_Dico;
-        C : Code_Binaire := Cree_Code;
+        C : Code_Binaire := Declare_Code;
     begin
         Genere_Codes(H.A, C, D);
         return D;
@@ -103,13 +104,41 @@ package body Huffman is
             Put_Line("[huffman.adb] Tentative de lecture d'un Arbre Vide !");
         end if;
         if A.Data = Character'Val(0) then
-            C2 := Cree_Code(C);
+            if not Est_Null(C) then
+                C2 := Cree_Code(C);
+            else
+                C2 := Cree_Code;
+                C := Cree_Code;
+            end if;
             Enfiler(ZERO, C2);
+            
+
+            Put("A.Data : ");
+            Put(A.Data);
+            new_Line;
+            Put("Code fils gauche");
+            Affiche_Code(C2);
+
             Genere_Codes(A.FilsG, C2, D);
             Enfiler(UN, C);
+
+            Put("A.Data : ");
+            Put(A.Data);
+            new_Line;
+            Put("Code fils droit");
+            Affiche_Code(C);
+
             Genere_Codes(A.FilsD, C, D);
         else
             Set_Code(A.Data, C, D);
+
+            Put("A.Data : ");
+            Put(A.Data);
+            new_Line;
+            Put("Code de feuille");
+            Affiche_Code(C);
+            new_Line;
+            new_Line;
         end if;
 
     end Genere_Codes;

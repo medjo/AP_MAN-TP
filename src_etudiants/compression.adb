@@ -65,28 +65,13 @@ package body Compression is
     begin
         Cree_Arbre(A);
         
-        Put("Fusion :");
-        new_Line;
 
         Supprime(F, Fils, Prio1);
-        Put("Fils1 :"&Character'Image(GetData_Arbre(Fils)));
-        new_Line;
 
         SetFilsG(A, Fils);
         Supprime(F, Fils, Prio2);
-        Put("Fils2 :"&Character'Image(GetData_Arbre(Fils)));
-        new_Line;
         SetFilsD(A, Fils);
         Insere(F, A, Prio1 + Prio2);
-        Put("Père :"&Character'Image(GetData_Arbre(A)));
-        new_Line;
-        Put("FilsG :"&Character'Image(GetData_Arbre(GetFilsG(A))));
-        new_Line;
-        Put("FilsD :"&Character'Image(GetData_Arbre(GetFilsD(A))));
-        new_Line;
-        new_Line;
-        Put("Valeur de A.Data : ");
-        Put(GetData_Arbre(A));
         return A;
     end Fusionne_2_Premiers;
 
