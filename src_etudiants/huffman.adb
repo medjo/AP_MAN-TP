@@ -113,7 +113,20 @@ package body Huffman is
         end if;
 
     end Genere_Codes;
-
+    
+	function Est_Vide (A : Arbre) return Boolean is
+	begin
+		if (A = NULL) then
+			return true;
+		end if;
+		return false;
+	end Est_Vide;
+	
+	function Get_Data (A: Arbre) return Character is
+	begin
+		return A.Data;
+	end Get_Data;
+	
     -- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.
 --	procedure Libere(H : in out Arbre_Huffman) is

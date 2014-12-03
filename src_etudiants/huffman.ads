@@ -92,7 +92,9 @@ package Huffman is
 
     procedure Affiche_Arbre(A : Arbre);
 -- #########################################################
-
+	function Est_Vide (A : Arbre) return Boolean;
+	
+	function Get_Data (A : Arbre) return Character;
 
 -- #########################################################
      -- FONCTIONS LIEES A LA DECOMPRESSION
