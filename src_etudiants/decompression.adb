@@ -17,18 +17,18 @@ package body decompression is
 		procedure Lire_Donnee (D : in out Arbre) is
 			L : Character;
 		begin
-			Character'Read(Flux, L);
+			L := Character'Input(Flux);
 			D := Cree_Arbre(L) ;
 		end Lire_Donnee;
 		
 		procedure Lire_Priorite (P: in out Integer) is
 		begin
-			Integer'Read(Flux, P);
+			P := Integer'Input(Flux);
 		end Lire_Priorite;
 		
 		procedure Lire_Capacite (C : in out Integer) is
 		begin
-			Integer'Read(Flux, C);
+			C := Integer'Input(Flux);
 		end Lire_Capacite;
 		
 	begin
