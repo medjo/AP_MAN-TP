@@ -18,6 +18,7 @@ package Huffman is
 		Nb_Total_Caracteres : Natural;
         Tab_Occ : Tab_Char;
         Nb_Prio : Integer;
+        D : Dico_Caracteres;
 		-- A completer selon vos besoins!
 	end record;
 
