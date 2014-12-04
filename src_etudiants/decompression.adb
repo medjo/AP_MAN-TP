@@ -22,8 +22,12 @@ package body decompression is
 		end Lire_Donnee;
 		
 		procedure Lire_Priorite (P: in out Integer) is
+			Oct3, Oct2, Oct1 : u8_integer;
 		begin
-			P := Integer'Input(Flux);
+			Oct3 := u8_integer'Input(Flux);
+			Oct2 := u8_integer'Input(Flux);
+			Oct1 := u8_integer'Input(Flux);
+			Calcul_Nb_Occurence (Oct3, Oct2, Oct1, P);
 		end Lire_Priorite;
 		
 		procedure Lire_Capacite (C : in out Integer) is
@@ -31,13 +35,25 @@ package body decompression is
 			C := Integer'Input(Flux);
 		end Lire_Capacite;
 		
+		--Calcule le nombre d'occurences d'une lettre d'après l'encodage de l'abre de huffman
+		--convenu
+		--Val = Oct3 * 2¹⁶ + Oct2 * 2⁸ + Oct1
+		--OctI entre 0 et 255
+		--les valeurs de type integer sont typiquement codées sur 32 bits -> no pb
+		procedure Calcul_Nb_Occurence (Oct3 : in u8_integer; Oct2 : in u8_integer;
+				Oct1 : in u8_integer; Val : out Integer) is			
+		begin
+			Val := Oct3 * pow(2, 16) + Oct2 * pow (2, 8) + Oct1;
+		end Calcul_Nb_Occurence;
+		
 	begin
 		Lire_Capacite(C);
 		F := Compression.FP.Cree_File(C);
-		while (NOT(Fin_Lecture_Huffman)) loop
+		while (C > 0) loop
 			Lire_Donnee(D);
 			Lire_Priorite(Prio);
-			Compression.FP.Insere(F, D, Prio); 
+			Compression.FP.Insere(F, D, Prio);
+			C := C - 1; 
 		end loop;
 		
 		while (Compression.FP.GetCapa(F) > 1) loop
@@ -67,7 +83,7 @@ package body decompression is
 --    mais que le parcours s'est arrete avant une feuille, alors
 --    Caractere_Trouve vaut False, Caractere est indetermine
 --    et A est le dernier noeud atteint.
-	procedure Get_Caractere(B : in Integer; A : in out Arbre;
+	procedure Get_Caractere(B : in Bit; A : in out Arbre;
 				Caractere_Trouve : out Boolean;
 				Caractere : out Character) is		
 	begin
@@ -93,9 +109,28 @@ package body decompression is
 		Out_Flux : Ada.Streams.Stream_IO.Stream_Access;
 		H : Arbre_Huffman;
 		Tmp : Arbre;
-		B : Integer;
+		Val_Oct : Integer;
 		Caractere_Trouve : Boolean;
-		C : Character;
+		Car : Character;
+		C : Code_Binaire := Cree_Code;
+		B : Bit;	
+		
+		--Convertit une valeur decimale sur un octet en binaire et l'enfile dans C 
+		procedure Conversion_Dec_Bin (Dec : in u8_integer; C : in out Code_Binaire) is
+			Tmp : u8_integer := Dec;
+			I : Integer := 7;
+		begin
+			while I >= 0 loop
+				if Tmp/pow(2, I) = 1 then
+					Enfiler(1, C);
+					Tmp := Tmp - pow(2, I);
+				else
+					Enfiler(0, C);
+				end if;
+				I := I - 1;
+			end loop;
+		end Conversion_Dec_Bin;
+		
 	begin
 		Open(In_Fichier, In_File, Nom_Fichier_In);
 		In_Flux := Stream(In_Fichier);
@@ -107,15 +142,33 @@ package body decompression is
 		Out_Flux := Stream (Out_Fichier);
 		
 		while NOT(End_Of_File(In_Fichier)) loop
-			B := Integer'Input(In_Flux);
-			Get_Caractere(B, Tmp, Caractere_Trouve, C);
+			if (Est_Null(C) or Est_Vide_Code(C)) then
+				Val_Oct := Integer'Input(In_Flux);
+				Conversion_Dec_Bin (Val_Oct, C);
+			end if;
+			PFile.Supprime_Tete(C.all, B);
+			Get_Caractere(B, Tmp, Caractere_Trouve, Car);
 			if Caractere_Trouve then
 				Tmp := H.A;
-				Character'Output(Out_Flux, C);
+				Character'Output(Out_Flux, Car);
 			end if;
 		end loop;
 		
 		Close(Out_Fichier);
 		Close(In_Fichier);
 	end Decompresse;
+	
+	
+	function pow (X : in Integer; expo : in Integer) return Integer is
+		Sol : Integer := 0;
+	begin
+		if expo = 0 then
+			return 1;
+		elsif expo = 1 then
+			return X;
+		else
+			Sol := (pow(X, expo/2) * pow(X, expo/2) * pow(X, expo%2) );
+			return Sol;
+		end if;
+	end pow;
 end decompression;
