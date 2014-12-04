@@ -46,7 +46,9 @@ package Code is
     function Est_Vide_Code(C : Code_Binaire) return Boolean;
 
 	procedure Supprime_Tete_Code (C: in out Code_Binaire ; V : out Bit);
-
+	
+	procedure Insere_Queue_Code (C: in out Code_Binaire; V : in Bit);
+	
     function Est_Null(C : Code_Binaire) return Boolean;
 
     function Declare_Code return Code_Binaire;

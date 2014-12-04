@@ -58,5 +58,10 @@ package body Code is
     begin
         PFile.Supprime_Tete(C.all, V);
     end Supprime_Tete_Code;
+    
+	procedure Insere_Queue_Code (C: in out Code_Binaire; V : in Bit) is
+    begin
+        PFile.Insere_Queue(V, C.all);
+    end Insere_Queue_Code;
 
 end Code;
