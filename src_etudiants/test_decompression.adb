@@ -26,30 +26,37 @@ begin
 										--nombre de caractères dans le texte
 										 
 	Character'Output(Flux, ' ');		--Un caractere est ecrit sur 1 octet
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);				--Les 3 octets suivants indiquent sa fréquence
 	Octet'Output(Flux, 0);				
 	Octet'Output(Flux, 2);
 	Character'Output(Flux, 'c');
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'd');
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'e');
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'i');
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 5);
 	Character'Output(Flux, 'n');
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'v');
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 3);

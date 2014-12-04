@@ -20,10 +20,11 @@ package body decompression is
 		--Val = Oct3 * 2¹⁶ + Oct2 * 2⁸ + Oct1
 		--OctI entre 0 et 255
 		--les valeurs de type integer sont typiquement codées sur 32 bits -> no pb
-		procedure Calcul_Nb_Occurence (Oct3 : in Octet; Oct2 : in Octet;
+		procedure Calcul_Nb_Occurence (Oct4 : in Octet; Oct3 : in Octet; Oct2 : in Octet;
 				Oct1 : in Octet; Val : out Integer) is			
 		begin
-			Val := Integer(Oct3) * 2**16 + Integer(Oct2) * 2**8 + Integer(Oct1);
+			Val := Integer(Oct4) * 2**24 +Integer(Oct3) * 2**16 + Integer(Oct2) * 2**8 
+					+ Integer(Oct1);
 		end Calcul_Nb_Occurence;
 		
 		procedure Lire_Donnee (D : in out Arbre) is
@@ -36,12 +37,13 @@ package body decompression is
 		
 		--Traduit les 3 octets de la priorité en une valeur numérique.
 		procedure Lire_Priorite (P: in out Integer) is
-			Oct3, Oct2, Oct1 : Octet;
+			Oct4, Oct3, Oct2, Oct1 : Octet;
 		begin
+			Oct4 := Octet'Input(Flux);
 			Oct3 := Octet'Input(Flux);
 			Oct2 := Octet'Input(Flux);
 			Oct1 := Octet'Input(Flux);
-			Calcul_Nb_Occurence (Oct3, Oct2, Oct1, P);
+			Calcul_Nb_Occurence (Oct4, Oct3, Oct2, Oct1, P);
 		end Lire_Priorite;
 		
 		procedure Lire_Capacite (C : in out Octet) is
@@ -137,7 +139,7 @@ package body decompression is
 		
 		Put_Line("Lecture de l'arbre...");
 		H := Lit_Huffman(In_Flux);
---		Affiche_Arbre(H.A);
+		Affiche_Arbre(H.A);
 		Tmp := H.A;
 
 		Put_Line("Creation du fichier décompressé...");		
