@@ -10,6 +10,10 @@ package body Dico is
         return D;
     end Cree_Dico;
 
+    function Get_Code_From_Dico(C : Character ; D : in Dico_Caracteres) return Code_Binaire is
+    begin
+        return D.all(Character'Pos(C));
+    end Get_Code_From_Dico;
 
 	procedure Set_Code(C : in Character; Code : in Code_Binaire; D : in out Dico_Caracteres) is
     begin

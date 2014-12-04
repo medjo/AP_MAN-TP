@@ -31,10 +31,10 @@ package body Listes.File is
 	end Est_Vide;
 
 	-- insertion d'un element V en tete de liste
-	procedure Insere_Queue(V: Element; L: in out File) is
+	procedure Enfiler(V: Element; L: in out File) is
 	begin
         L := new Cellule'(Val => V, Suiv => L);
-	end Insere_Queue;
+	end Enfiler;
 
 	procedure Defiler (L: in out File; V: out Element) is
         Browse : Liste := L;
@@ -55,10 +55,14 @@ package body Listes.File is
         end if;
 	end Defiler;
 	
+	procedure Supprime_Tete (L: in out File; V : out Element) is
+    begin
+        Listes.Supprime_Tete(L, V);
+	end Supprime_Tete;
 
-	procedure Enfiler (V: Element; L: in out File) is
+	procedure Insere_Queue (V: Element; L: in out File) is
     begin
         Listes.Insere_Queue(V, L);
-    end Enfiler;
+    end Insere_Queue;
 
 end Listes.File;

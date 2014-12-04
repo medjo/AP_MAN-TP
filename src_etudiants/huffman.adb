@@ -154,10 +154,14 @@ package body Huffman is
         Flux_Out : Ada.Streams.Stream_IO.Stream_Access ; Nom_Fichier_In : String)
         return Natural is
         Nb_Octets_Ecrits : Natural := 0;
+        Bin2Dec : Natural := 1;
+        Decimal : Natural := 0 ;
 	    Fichier : Ada.Streams.Stream_IO.File_Type;
 		Flux_In : Ada.Streams.Stream_IO.Stream_Access;
 		C : Character;
         O : Octet;
+        SeqBits : Code_Binaire;
+        B : Bit;
     begin
         Open(Fichier, In_File, Nom_Fichier_In);
         Flux_In := Stream(Fichier);
@@ -187,9 +191,25 @@ package body Huffman is
 
 
         while not End_Of_File(Fichier) loop
-            --Lecture d'un caractère dans le fichier en entrée
-            C := Character'Input(Flux_In);
+            Decimal := 0;
+            Bin2Dec := 1;
+            while Bin2Dec <= 128 loop
+                --Lecture d'un caractère dans le fichier en entrée
+                C := Character'Input(Flux_In);
+                SeqBits := Get_Code_From_Dico(C, H.D);
+                while not Est_Vide_Code(SeqBits) and Bin2Dec <= 128 loop
+                    Supprime_Tete_Code(SeqBits, B);
+                    if B = UN then
+                        Decimal := Decimal + Bin2Dec;
+                    end if;
+                    Bin2Dec := Bin2Dec * 2 ;
+                end loop;
+
+            end loop;
             --Écriture du Code de ce Caractère dans le Fichier de sortie
+            O := Octet(Decimal);
+            Octet'Output(Flux_Out, O);
+            Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
 
         end loop;
         Close(Fichier);

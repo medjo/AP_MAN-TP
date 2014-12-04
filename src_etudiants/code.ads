@@ -45,6 +45,7 @@ package Code is
     --Retourne true si le code est vide
     function Est_Vide_Code(C : Code_Binaire) return Boolean;
 
+	procedure Supprime_Tete_Code (C: in out Code_Binaire ; V : out Bit);
 
     function Est_Null(C : Code_Binaire) return Boolean;
 

@@ -40,5 +40,6 @@ package Listes.File is
 	procedure Insere_Queue (V: Element; L: in out File);
 
 
+	procedure Supprime_Tete (L: in out File; V : out Element);
 
 end Listes.File;
