@@ -24,7 +24,7 @@ package body Code is
     begin
         tmp := C.all;
         while not PFile.Est_Vide(tmp) loop
-            PFile.Insere_Queue(tmp.val, C2.all);
+            PFile.Enfiler(tmp.val, C2.all);
             tmp := tmp.all.suiv;
         end loop;
         return C2;
@@ -59,4 +59,8 @@ package body Code is
         PFile.Supprime_Tete(C.all, V);
     end Supprime_Tete_Code;
 
+    function Get_File(C : Code_Binaire) return File is
+    begin
+        return C.all;
+    end Get_File;
 end Code;

@@ -1,5 +1,6 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Dico; use Dico;
 with Code; use Code;
 
@@ -22,6 +23,8 @@ package Huffman is
 		-- A completer selon vos besoins!
 	end record;
 
+    type Tab8Char is array (Integer range 0 .. 7) of Character;
+    type Tab8Bit is array (Integer range 0 .. 7) of Bit;
 	-- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.
 --	procedure Libere(H : in out Arbre_Huffman);
@@ -55,6 +58,7 @@ package Huffman is
 
     procedure Genere_Codes(A : Arbre ; C : in out Code_Binaire ; D : in out Dico_Caracteres);
 
+    function ConvertBin2Dec(SeqBits : Tab8Bit) return Integer;
 ------ Parcours de l'arbre (decodage)
 
 -- Parcours a l'aide d'un iterateur sur un code, en partant du noeud A

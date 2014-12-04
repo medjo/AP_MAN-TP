@@ -51,6 +51,8 @@ package Code is
 
     function Declare_Code return Code_Binaire;
 
+    function Get_File(C : Code_Binaire) return File;
+
 	-- Ajoute le bit B en tete du code C
 --	procedure Ajoute_Avant(B : in Bit; C : in out Code_Binaire);
 

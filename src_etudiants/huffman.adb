@@ -1,13 +1,14 @@
 with Compression; use Compression;
 package body Huffman is
 
-     type Noeud is
-		record
-			Data : Character;
+    type Noeud is
+        record
+            Data : Character;
             FilsG : Arbre ; 
             FilsD : Arbre ;
-		end record;
-   
+        end record;
+
+
     function Cree_Arbre return Arbre is
         A : Arbre;
     begin
@@ -69,10 +70,10 @@ package body Huffman is
     begin
         A.FilsD := Fils;
     end SetFilsD;
-	-- Cree un arbre de Huffman a partir d'un fichier texte
-	-- Cette function lit le fichier et compte le nb d'occurences des
-	-- differents caracteres presents, puis genere l'arbre correspondant
-	-- et le retourne.
+    -- Cree un arbre de Huffman a partir d'un fichier texte
+    -- Cette function lit le fichier et compte le nb d'occurences des
+    -- differents caracteres presents, puis genere l'arbre correspondant
+    -- et le retourne.
     function Cree_Huffman(Nom_Fichier : in String) return Arbre_Huffman is
 
         Nb_Prio : Integer := 0;
@@ -88,14 +89,14 @@ package body Huffman is
         return AH;
     end Cree_Huffman;
 
-	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
+    function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
         D : Dico_Caracteres := Cree_Dico;
         C : Code_Binaire := Declare_Code;
     begin
         Genere_Codes(H.A, C, D);
         return D;
     end Genere_Dictionnaire;
-    
+
     procedure Genere_Codes(A : Arbre; C : in out Code_Binaire ; D : in out Dico_Caracteres) is
         C2 : Code_Binaire;
     begin
@@ -118,51 +119,58 @@ package body Huffman is
             Set_Code(A.Data, C, D);
         end if;
     end Genere_Codes;
-    
-	function Est_Vide (A : Arbre) return Boolean is
-	begin
-		if (A = NULL) then
-			return true;
-		end if;
-		return false;
-	end Est_Vide;
-	
-	function Get_Data (A: Arbre) return Character is
-	begin
-		return A.Data;
-	end Get_Data;
-	
-    -- Libere l'arbre de racine A.
-	-- garantit: en sortie toute la memoire a ete libere, et A = null.
---	procedure Libere(H : in out Arbre_Huffman) is
---    begin
-        -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
---        null;
---    end Libere;
 
---	procedure Affiche(H : in Arbre_Huffman) is
---    begin
-        -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
---        null;
- --   end Affiche;
-	
+    function Est_Vide (A : Arbre) return Boolean is
+    begin
+        if (A = NULL) then
+            return true;
+        end if;
+        return false;
+    end Est_Vide;
+
+    function Get_Data (A: Arbre) return Character is
+    begin
+        return A.Data;
+    end Get_Data;
+
+    -- Libere l'arbre de racine A.
+    -- garantit: en sortie toute la memoire a ete libere, et A = null.
+    --	procedure Libere(H : in out Arbre_Huffman) is
+    --    begin
+    -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
+    --        null;
+    --    end Libere;
+
+    --	procedure Affiche(H : in Arbre_Huffman) is
+    --    begin
+    -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
+    --        null;
+    --   end Affiche;
+
 
     -- Stocke un arbre dans un flux ouvert en ecriture
-	-- Le format de stockage est celui decrit dans le sujet
-	-- Retourne le nb d'octets ecrits dans le flux (pour les stats)
+    -- Le format de stockage est celui decrit dans le suNb_Octets_Luset
+    -- Retourne le nb d'octets ecrits dans le flux (pour les stats)
     function Ecrit_Huffman(H : in Arbre_Huffman;
         Flux_Out : Ada.Streams.Stream_IO.Stream_Access ; Nom_Fichier_In : String)
         return Natural is
         Nb_Octets_Ecrits : Natural := 0;
+        --        Nb_Octets_Lus : Natural := 0;
         Bin2Dec : Natural := 1;
         Decimal : Natural := 0 ;
-	    Fichier : Ada.Streams.Stream_IO.File_Type;
-		Flux_In : Ada.Streams.Stream_IO.Stream_Access;
-		C : Character;
+        Fichier : Ada.Streams.Stream_IO.File_Type;
+        Flux_In : Ada.Streams.Stream_IO.Stream_Access;
+        C : Octet;
         O : Octet;
-        SeqBits : Code_Binaire;
         B : Bit;
+        F : PFile.File;
+        Last_Chars : Tab8Char;
+        SeqBits : Tab8Bit;
+        I_Seq : Integer := 0;
     begin
+        for I in Last_Chars'range loop
+            Last_Chars(I) := Character'Val(0);
+        end loop;
         Open(Fichier, In_File, Nom_Fichier_In);
         Flux_In := Stream(Fichier);
 
@@ -191,69 +199,105 @@ package body Huffman is
 
 
         while not End_Of_File(Fichier) loop
+            --Lecture d'un caractère dans le fichier en entrée
+            C := Octet'Input(Flux_In);
+            --Last_Chars Enregistre les 8 derniers caractères lus.
+            --                Nb_Octets_Lus := Nb_Octets_Lus + 1;
+            --                Last_Chars(Nb_Octets_Lus % 8) := C;
+
+            F := Get_File(Get_Code_From_Dico(Character'Val(C), H.D));
             Decimal := 0;
-            Bin2Dec := 1;
-            while Bin2Dec <= 128 loop
-                --Lecture d'un caractère dans le fichier en entrée
-                C := Character'Input(Flux_In);
-                SeqBits := Get_Code_From_Dico(C, H.D);
-                while not Est_Vide_Code(SeqBits) and Bin2Dec <= 128 loop
-                    Supprime_Tete_Code(SeqBits, B);
-                    if B = UN then
-                        Decimal := Decimal + Bin2Dec;
-                    end if;
-                    Bin2Dec := Bin2Dec * 2 ;
-                end loop;
+            while (not PFile.Est_Vide(F)) loop
+                SeqBits(I_Seq) := F.val;
+                F := F.suiv;
+                I_Seq := I_Seq + 1;
+                if I_Seq = 8 then
+                    O := Octet(ConvertBin2Dec(SeqBits));
+
+                    Put_Line("SeqBits : ");
+                    for I in SeqBits'range loop
+                        Put(SeqBits(I));
+                    end loop;
+
+                    Put(ConvertBin2Dec(SeqBits));
+                    new_Line;
+                    Octet'Output(Flux_Out, O);
+                    Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
+                    I_Seq := 0;
+                end if;
 
             end loop;
+
             --Écriture du Code de ce Caractère dans le Fichier de sortie
-            O := Octet(Decimal);
-            Octet'Output(Flux_Out, O);
-            Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
+
+            --            if Bin2Dec <= 128 then
+            --Si on écrit le dernier octet du fichier, 
+            --                while Nb_Octets_Ecrits % 8 /= Nb_Octets_Lus % 8 loop
+            ----                    O := Last_Chars(Nb_Octets_Ecrits % 8);
+            --                    Octet'Output(Flux_Out, O);
+            ----                    Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
+            --                end loop;
+            --            else
+            --            O := Octet(Decimal);
+            --            Octet'Output(Flux_Out, O);
+            --            Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
+            --            end if;
 
         end loop;
         Close(Fichier);
         return Nb_Octets_Ecrits;
     end Ecrit_Huffman;
 
-	-- Lit un arbre stocke dans un flux ouvert en lecture
-	-- Le format de stockage est celui decrit dans le sujet
---	function Lit_Huffman(Flux : Ada.Streams.Stream_IO.Stream_Access)
---		return Arbre_Huffman is
- --   begin
-        -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
---        null;
---    end Lit_Huffman;
+
+    function ConvertBin2Dec(SeqBits : Tab8Bit) return Integer is
+        Base : Integer := 128;
+        Resultat : Integer := 0;
+    begin
+        for I in SeqBits'range loop
+            Resultat := Resultat + (Base * SeqBits(I));
+            Base := Base / 2;
+        end loop;
+        return Resultat;
+    end ConvertBin2Dec;
+
+    -- Lit un arbre stocke dans un flux ouvert en lecture
+    -- Le format de stockage est celui decrit dans le suNb_Octets_Luset
+    --	function Lit_Huffman(Flux : Ada.Streams.Stream_IO.Stream_Access)
+    --		return Arbre_Huffman is
+    --   begin
+    -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
+    --        null;
+    --    end Lit_Huffman;
 
 
-	-- Retourne un dictionnaire contenant les caracteres presents
-	-- dans l'arbre et leur code binaire (evite les parcours multiples)
-	-- de l'arbre
---	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
-  --  begin
-        -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
+    -- Retourne un dictionnaire contenant les caracteres presents
+    -- dans l'arbre et leur code binaire (evite les parcours multiples)
+    -- de l'arbre
+    --	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
+    --  begin
+    -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
     --    null;
-   -- end Genere_Dictionnaire;
+    -- end Genere_Dictionnaire;
 
 
 
------- Parcours de l'arbre (decodage)
+    ------ Parcours de l'arbre (decodage)
 
--- Parcours a l'aide d'un iterateur sur un code, en partant du noeud A
---  * Si un caractere a ete trouve il est retourne dans Caractere et
---    Caractere_Trouve vaut True. Le code n'a eventuellement pas ete
---    totalement parcouru. A est une feuille.
---  * Si l'iteration est terminee (plus de bits a parcourir ds le code)
---    mais que le parcours s'est arrete avant une feuille, alors
---    Caractere_Trouve vaut False, Caractere est indetermine
---    et A est le dernier noeud atteint.
---	procedure Get_Caractere(It_Code : in Iterateur_Code; A : in out Arbre;
---				Caractere_Trouve : out Boolean;
---				Caractere : out Character) is
---    begin
-        -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
---        null;
---    end Get_Caractere;
+    -- Parcours a l'aide d'un iterateur sur un code, en partant du noeud A
+    --  * Si un caractere a ete trouve il est retourne dans Caractere et
+    --    Caractere_Trouve vaut True. Le code n'a eventuellement pas ete
+    --    totalement parcouru. A est une feuille.
+    --  * Si l'iteration est terminee (plus de bits a parcourir ds le code)
+    --    mais que le parcours s'est arrete avant une feuille, alors
+    --    Caractere_Trouve vaut False, Caractere est indetermine
+    --    et A est le dernier noeud atteint.
+    --	procedure Get_Caractere(It_Code : in Iterateur_Code; A : in out Arbre;
+    --				Caractere_Trouve : out Boolean;
+    --				Caractere : out Character) is
+    --    begin
+    -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
+    --        null;
+    --    end Get_Caractere;
 
 
 end Huffman;
