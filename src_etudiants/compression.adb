@@ -55,6 +55,9 @@ package body Compression is
             A := Fusionne_2_Premiers(F);
         end loop;
         Nb_Carac := GetPrio(F, 1);
+        I := GetFirst(F) + 1;
+            
+        Libere_File(F);
     end Creation_Arbre_Huff;
 
 

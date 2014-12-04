@@ -2,6 +2,7 @@
 -- D'autres operations peuvent etre ajoutees si necessaire, et 
 -- toutes ne vous seront pas forcement utiles...
 
+with Ada.Unchecked_Deallocation;
 with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Ada.Text_Io; use Ada.Text_Io;
 with Listes.File;
@@ -29,12 +30,11 @@ package Code is
 	-- Copie un code existant
 	function Cree_Code(C : in Code_Binaire) return Code_Binaire;
 
-
 	-- insertion d'un element V en tete de liste
 	procedure Enfiler(V: Bit; C: in out Code_Binaire);
 
 	-- Libere un code
---	procedure Libere_Code(C : in out Code_Binaire);
+	procedure Libere_Code(C : in out Code_Binaire);
 	
 	-- Retourne le nb de bits d'un code
 --	function Longueur(C : in Code_Binaire) return Natural;

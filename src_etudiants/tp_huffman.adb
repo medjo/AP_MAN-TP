@@ -22,10 +22,11 @@ procedure tp_huffman is
 	begin
         Huff := Cree_Huffman(Nom_Fichier_In);
         Huff.D := Genere_Dictionnaire(Huff);
-
         Create(Fichier, Out_File, Nom_Fichier_Out);
         Flux := Stream(Fichier);
         Nb_Octets_Ecrits := Ecrit_Huffman(Huff, Flux, Nom_Fichier_In);
+        Libere_Arbre(Huff.A);
+        Libere_Dico(Huff.D); 
         Close(Fichier);
 
 	end Compresse;

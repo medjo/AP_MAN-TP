@@ -1,4 +1,5 @@
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with Ada.Unchecked_Deallocation;
 with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Interfaces; use Interfaces;
@@ -26,9 +27,10 @@ package Huffman is
 
     type Tab8Char is array (Integer range 0 .. 7) of Character;
     type Tab8Bit is array (Integer range 0 .. 7) of Bit;
+
 	-- Libere l'arbre de racine A.
 	-- garantit: en sortie toute la memoire a ete libere, et A = null.
---	procedure Libere(H : in out Arbre_Huffman);
+    	procedure Libere_Arbre(A : in out Arbre);
 
 --	procedure Affiche(H : in Arbre_Huffman);
 	

@@ -23,9 +23,10 @@ package Dico is
 	function Cree_Dico return Dico_Caracteres;
 
     function Get_Code_From_Dico(C : Character ; D : in Dico_Caracteres) return Code_Binaire;
+
 	-- Libere le dictionnaire D
 	-- garantit: en sortie toute la memoire a ete libere, et D = null.
---	procedure Libere(D : in out Dico_Caracteres);
+	procedure Libere_Dico(D : in out Dico_Caracteres);
 	
 	-- Affiche pour chaque caractere: son nombre d'occurences et son code
 	-- (s'il a ete genere)

@@ -1,7 +1,10 @@
+with Ada.Unchecked_Deallocation;
 
 package body Dico is
 
     type Dico_Caracteres_Interne is array (Natural range 0 .. 255) of Code_Binaire;
+
+	procedure Liberer is new Ada.Unchecked_Deallocation (Dico_Caracteres_Interne, Dico_Caracteres);	
 
     function Cree_Dico return Dico_Caracteres is
         D : Dico_Caracteres;
@@ -34,5 +37,13 @@ package body Dico is
             end if;
         end loop;
     end Affiche_Dico;
+
+	procedure Libere_Dico(D : in out Dico_Caracteres) is
+    begin
+        for I in Dico_Caracteres_Interne'range loop
+            Libere_Code(D.all(I));
+        end loop;
+        Liberer(D);
+    end Libere_Dico;
 
 end Dico;

@@ -17,7 +17,6 @@ package body Listes.File is
 	procedure Libere_File (L : in out File) is
 	begin
 		Libere_Liste(L);
-		--Vide(L);
 	end Libere_File;
 
 

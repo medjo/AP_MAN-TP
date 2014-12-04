@@ -5,6 +5,7 @@
 package body Code is
 
     
+	procedure Liberer is new Ada.Unchecked_Deallocation (File, Code_Binaire);	
 
     function Declare_Code return Code_Binaire is
     begin
@@ -68,4 +69,11 @@ package body Code is
     begin
         return C.all;
     end Get_File;
+
+	procedure Libere_Code(C : in out Code_Binaire) is
+    begin
+        PFile.Libere_File(C.all);
+        Liberer(C);
+
+    end Libere_Code;
 end Code;

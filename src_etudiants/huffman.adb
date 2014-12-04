@@ -1,6 +1,7 @@
 with Compression; use Compression;
 package body Huffman is
 
+
     type Noeud is
         record
             Data : Character;
@@ -8,6 +9,7 @@ package body Huffman is
             FilsD : Arbre ;
         end record;
 
+	procedure Liberer is new Ada.Unchecked_Deallocation (Noeud, Arbre);	
 
     function Cree_Arbre return Arbre is
         A : Arbre;
@@ -135,11 +137,20 @@ package body Huffman is
 
     -- Libere l'arbre de racine A.
     -- garantit: en sortie toute la memoire a ete libere, et A = null.
-    --	procedure Libere(H : in out Arbre_Huffman) is
-    --    begin
-    -- STUB, A REMPLACER PAR VOTRE CODE!VOTRE
-    --        null;
-    --    end Libere;
+    	procedure Libere_Arbre(A : in out Arbre) is
+        begin
+            if A = null then
+                return;
+            end if;
+            if A.FilsG = null and then A.FilsD = null then
+                Liberer(A);
+            else
+                Libere_Arbre(A.FilsG);
+                Libere_Arbre(A.FilsD);
+            end if;
+        end Libere_Arbre;
+
+
 
     --	procedure Affiche(H : in Arbre_Huffman) is
     --    begin
@@ -167,6 +178,7 @@ package body Huffman is
         SeqBits : Tab8Bit;
         I_Seq : Integer := 0;
         Nb_Occ : Unsigned_32;
+        Code : Code_Binaire;
     begin
         for I in Last_Chars'range loop
             Last_Chars(I) := Character'Val(0);
@@ -250,6 +262,7 @@ package body Huffman is
         end loop;
 
         Close(Fichier);
+
         return Nb_Octets_Ecrits;
     end Ecrit_Huffman;
 
