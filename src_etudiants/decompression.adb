@@ -15,7 +15,7 @@ package body decompression is
 		C : Octet := 0;
 		Fin_Lecture_Huffman : Boolean := false;
 		
-		--Calcule le nombre d'occurences d'une lettre d'après l'encodage de l'abre de huffman
+		--Calcule le nombre d'occurences d'une lettre d'après l'encodage de l'arbre de huffman
 		--convenu
 		--Val = Oct3 * 2¹⁶ + Oct2 * 2⁸ + Oct1
 		--OctI entre 0 et 255
@@ -34,6 +34,7 @@ package body decompression is
 			D := Cree_Arbre(L) ;
 		end Lire_Donnee;
 		
+		--Traduit les 3 octets de la priorité en une valeur numérique.
 		procedure Lire_Priorite (P: in out Integer) is
 			Oct3, Oct2, Oct1 : Octet;
 		begin
@@ -69,25 +70,13 @@ package body decompression is
 		return (H);
 	end Lit_Huffman;
 	
-	-- Retourne un dictionnaire contenant les caracteres presents
-	-- dans l'arbre et leur code binaire (evite les parcours multiples)
-	-- de l'arbre
---	function Genere_Dictionnaire(H : in Arbre_Huffman) return Dico_Caracteres is
---		D : Dico_Caracteres := Cree_Dico;
---	begin
-		
---	end Genere_Dictionnaire;
-	
+
 ------ Parcours de l'arbre (decodage)
 
--- Parcours a l'aide d'un iterateur sur un code, en partant du noeud A
+
 --  * Si un caractere a ete trouve il est retourne dans Caractere et
 --    Caractere_Trouve vaut True. Le code n'a eventuellement pas ete
 --    totalement parcouru. A est une feuille.
---  * Si l'iteration est terminee (plus de bits a parcourir ds le code)
---    mais que le parcours s'est arrete avant une feuille, alors
---    Caractere_Trouve vaut False, Caractere est indetermine
---    et A est le dernier noeud atteint.
 	procedure Get_Caractere(B : in Integer; A : in out Arbre;
 				Caractere_Trouve : out Boolean;
 				Caractere : out Character) is		
