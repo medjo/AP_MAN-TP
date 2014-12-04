@@ -20,10 +20,11 @@ package body decompression is
 		--Val = Oct3 * 2¹⁶ + Oct2 * 2⁸ + Oct1
 		--OctI entre 0 et 255
 		--les valeurs de type integer sont typiquement codées sur 32 bits -> no pb
-		procedure Calcul_Nb_Occurence (Oct3 : in Octet; Oct2 : in Octet;
+		procedure Calcul_Nb_Occurence (Oct4 : in Octet; Oct3 : in Octet; Oct2 : in Octet;
 				Oct1 : in Octet; Val : out Integer) is			
 		begin
-			Val := Integer(Oct3) * 2**16 + Integer(Oct2) * 2**8 + Integer(Oct1);
+			Val := Integer(Oct4) * 2**24 +Integer(Oct3) * 2**16 + Integer(Oct2) * 2**8 
+					+ Integer(Oct1);
 		end Calcul_Nb_Occurence;
 		
 		procedure Lire_Donnee (D : in out Arbre) is
@@ -36,12 +37,13 @@ package body decompression is
 		
 		--Traduit les 3 octets de la priorité en une valeur numérique.
 		procedure Lire_Priorite (P: in out Integer) is
-			Oct3, Oct2, Oct1 : Octet;
+			Oct4, Oct3, Oct2, Oct1 : Octet;
 		begin
+			Oct4 := Octet'Input(Flux);
 			Oct3 := Octet'Input(Flux);
 			Oct2 := Octet'Input(Flux);
 			Oct1 := Octet'Input(Flux);
-			Calcul_Nb_Occurence (Oct3, Oct2, Oct1, P);
+			Calcul_Nb_Occurence (Oct4, Oct3, Oct2, Oct1, P);
 		end Lire_Priorite;
 		
 		procedure Lire_Capacite (C : in out Octet) is
@@ -68,6 +70,7 @@ package body decompression is
 		H.A := D;
 		H.Nb_Total_Caracteres := Compression.FP.GetPrio(F, 1);
 		return (H);
+	--Liberer des choses ?
 	end Lit_Huffman;
 	
 
@@ -108,8 +111,8 @@ package body decompression is
 		Caractere_Trouve : Boolean;
 		Car : Character;
 		C : Code_Binaire := Cree_Code;
-		B : Bit;	
-		
+		B : Bit := 0;	
+		Compteur_Car : Integer := 0;
 		--Convertit une valeur decimale sur un octet en binaire et l'enfile dans C 
 		procedure Conversion_Dec_Bin (Dec : in Octet; C : in out Code_Binaire) is
 			Tmp : Octet := Dec;
@@ -117,11 +120,11 @@ package body decompression is
 		begin
 			while I >= 0 loop
 				if Tmp/(2**I) = 1 then
-					Insere_Queue_Code(C, 1);
+					Enfiler(1, C);
 					Tmp := Tmp - 2**I;
 --					Put(1);
 				else
-					Insere_Queue_Code(C, 0);
+					Enfiler(0, C);
 --					Put(0);
 				end if;
 				I := I - 1;
@@ -136,7 +139,7 @@ package body decompression is
 		
 		Put_Line("Lecture de l'arbre...");
 		H := Lit_Huffman(In_Flux);
---		Affiche_Arbre(H.A);
+		Affiche_Arbre(H.A);
 		Tmp := H.A;
 
 		Put_Line("Creation du fichier décompressé...");		
@@ -144,7 +147,7 @@ package body decompression is
 		Out_Flux := Stream (Out_Fichier);
 		
 		Put_Line("Décompression...");				
-		while NOT(End_Of_File(In_Fichier)) loop
+		while (Compteur_Car < H.Nb_Total_Caracteres) loop
 			if (Est_Null(C) or Est_Vide_Code(C)) then
 				Val_Oct := Octet'Input(In_Flux);
 --				Put(Integer(Val_Oct));New_Line;
@@ -155,10 +158,15 @@ package body decompression is
 --				New_Line;
 			end if;
 			Supprime_Tete_Code(C, B);
+--				New_Line;
+--				Put("Affichage C :");
+--				Affiche_Code(C);
+--				New_Line;
 			Get_Caractere(B, Tmp, Caractere_Trouve, Car);
 			if Caractere_Trouve then
 				Tmp := H.A;
 				Character'Output(Out_Flux, Car);
+				Compteur_Car := Compteur_Car + 1;
 				Put(Car);
 			end if;
 		end loop;

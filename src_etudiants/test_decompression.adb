@@ -26,30 +26,37 @@ begin
 										--nombre de caractères dans le texte
 										 
 	Character'Output(Flux, ' ');		--Un caractere est ecrit sur 1 octet
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);				--Les 3 octets suivants indiquent sa fréquence
 	Octet'Output(Flux, 0);				
 	Octet'Output(Flux, 2);
 	Character'Output(Flux, 'c');
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'd');
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'e');
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'i');
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 5);
 	Character'Output(Flux, 'n');
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 1);
 	Character'Output(Flux, 'v');
+	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 0);
 	Octet'Output(Flux, 3);
@@ -60,9 +67,7 @@ begin
 	Octet'Output(Flux, 77);		--on peut completer : "veni "	
 	Octet'Output(Flux, 210);	--"veni vidi"
 	Octet'Output(Flux, 221);	--"veni vidi vi"
-	Octet'Output(Flux, 13); 	--"veni vidi vici " Completion du dernier octet par un espace
-	Octet'Output(Flux, 182);	-- Ajout de code d'esapce jusqu'a terminer sur un octet rempli d'espaces
-								-- Le dernier octet du texte n'est pas traduit
+	Octet'Output(Flux, 0); 	--"veni vidi vici " Completion du dernier octet par un espace
 	close(In_Fichier);
 	
 --	H := Lit_Huffman(Flux);
