@@ -175,6 +175,7 @@ package body decompression is
 		
 		Close(Out_Fichier);
 		Close(In_Fichier);
+--		Libere_Code(C);
 		New_Line;
 		Put_Line("Fini");		
 	end Decompresse;
