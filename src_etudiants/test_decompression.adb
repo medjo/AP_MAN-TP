@@ -60,9 +60,7 @@ begin
 	Octet'Output(Flux, 77);		--on peut completer : "veni "	
 	Octet'Output(Flux, 210);	--"veni vidi"
 	Octet'Output(Flux, 221);	--"veni vidi vi"
-	Octet'Output(Flux, 13); 	--"veni vidi vici " Completion du dernier octet par un espace
-	Octet'Output(Flux, 182);	-- Ajout de code d'esapce jusqu'a terminer sur un octet rempli d'espaces
-								-- Le dernier octet du texte n'est pas traduit
+	Octet'Output(Flux, 0); 	--"veni vidi vici " Completion du dernier octet par un espace
 	close(In_Fichier);
 	
 --	H := Lit_Huffman(Flux);

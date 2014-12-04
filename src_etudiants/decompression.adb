@@ -68,6 +68,7 @@ package body decompression is
 		H.A := D;
 		H.Nb_Total_Caracteres := Compression.FP.GetPrio(F, 1);
 		return (H);
+	--Liberer des choses ?
 	end Lit_Huffman;
 	
 
@@ -108,8 +109,8 @@ package body decompression is
 		Caractere_Trouve : Boolean;
 		Car : Character;
 		C : Code_Binaire := Cree_Code;
-		B : Bit;	
-		
+		B : Bit := 0;	
+		Compteur_Car : Integer := 0;
 		--Convertit une valeur decimale sur un octet en binaire et l'enfile dans C 
 		procedure Conversion_Dec_Bin (Dec : in Octet; C : in out Code_Binaire) is
 			Tmp : Octet := Dec;
@@ -117,11 +118,11 @@ package body decompression is
 		begin
 			while I >= 0 loop
 				if Tmp/(2**I) = 1 then
-					Insere_Queue_Code(C, 1);
+					Enfiler(1, C);
 					Tmp := Tmp - 2**I;
 --					Put(1);
 				else
-					Insere_Queue_Code(C, 0);
+					Enfiler(0, C);
 --					Put(0);
 				end if;
 				I := I - 1;
@@ -144,7 +145,7 @@ package body decompression is
 		Out_Flux := Stream (Out_Fichier);
 		
 		Put_Line("Décompression...");				
-		while NOT(End_Of_File(In_Fichier)) loop
+		while (Compteur_Car < H.Nb_Total_Caracteres) loop
 			if (Est_Null(C) or Est_Vide_Code(C)) then
 				Val_Oct := Octet'Input(In_Flux);
 --				Put(Integer(Val_Oct));New_Line;
@@ -155,10 +156,15 @@ package body decompression is
 --				New_Line;
 			end if;
 			Supprime_Tete_Code(C, B);
+--				New_Line;
+--				Put("Affichage C :");
+--				Affiche_Code(C);
+--				New_Line;
 			Get_Caractere(B, Tmp, Caractere_Trouve, Car);
 			if Caractere_Trouve then
 				Tmp := H.A;
 				Character'Output(Out_Flux, Car);
+				Compteur_Car := Compteur_Car + 1;
 				Put(Car);
 			end if;
 		end loop;
