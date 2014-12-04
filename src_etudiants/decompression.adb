@@ -31,7 +31,7 @@ package body decompression is
 			L : Character;
 		begin
 			L := Character'Input(Flux);
-			Put(L);
+--			Put(L);
 			D := Cree_Arbre(L) ;
 		end Lire_Donnee;
 		
@@ -58,8 +58,8 @@ package body decompression is
 		while (C > 0) loop
 			Lire_Donnee(D);
 			Lire_Priorite(Prio);
-			Put(Prio);
-			New_Line;
+--			Put(Prio);
+	--		New_Line;
 			Compression.FP.Insere(F, D, Prio);
 			C := C - 1; 
 		end loop;
@@ -69,6 +69,7 @@ package body decompression is
 		end loop;
 		H.A := D;
 		H.Nb_Total_Caracteres := Compression.FP.GetPrio(F, 1);
+		Libere_File(F);
 		return (H);
 	--Liberer des choses ?
 	end Lit_Huffman;
@@ -139,7 +140,7 @@ package body decompression is
 		
 		Put_Line("Lecture de l'arbre...");
 		H := Lit_Huffman(In_Flux);
-		Affiche_Arbre(H.A);
+--		Affiche_Arbre(H.A);
 		Tmp := H.A;
 
 		Put_Line("Creation du fichier décompressé...");		
@@ -147,28 +148,29 @@ package body decompression is
 		Out_Flux := Stream (Out_Fichier);
 		
 		Put_Line("Décompression...");				
-		while (Compteur_Car < H.Nb_Total_Caracteres) loop
-			if (Est_Null(C) or Est_Vide_Code(C)) then
-				Val_Oct := Octet'Input(In_Flux);
+		while (Compteur_Car < H.Nb_Total_Caracteres) loop 	--On continue tant qu'on a pas lu
+			if (Est_Null(C) or Est_Vide_Code(C)) then		--tous les caractères
+				Val_Oct := Octet'Input(In_Flux);			--Si C est vide on prend l'octet suivant
 --				Put(Integer(Val_Oct));New_Line;
-				Conversion_Dec_Bin (Val_Oct, C);
+				Conversion_Dec_Bin (Val_Oct, C);			--Et on enfile ses bits dans C
 --				New_Line;
 --				Put("Affichage C :");
 --				Affiche_Code(C);
 --				New_Line;
 			end if;
-			Supprime_Tete_Code(C, B);
+			Supprime_Tete_Code(C, B);						--On recupère le prochain bit et on l'enlève de C
 --				New_Line;
 --				Put("Affichage C :");
 --				Affiche_Code(C);
 --				New_Line;
 			Get_Caractere(B, Tmp, Caractere_Trouve, Car);
-			if Caractere_Trouve then
-				Tmp := H.A;
-				Character'Output(Out_Flux, Car);
-				Compteur_Car := Compteur_Car + 1;
-				Put(Car);
+			if Caractere_Trouve then						--On est sur une feuille:
+				Tmp := H.A;									--On repart de la racine de l'arbre
+				Character'Output(Out_Flux, Car);			--On écrit le caratère
+				Compteur_Car := Compteur_Car + 1;			--On incrémente le nombre de caractères lus
+--				Put(Car);
 			end if;
+			
 		end loop;
 		
 		Close(Out_Fichier);
