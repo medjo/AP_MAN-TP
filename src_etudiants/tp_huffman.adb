@@ -4,6 +4,7 @@ with Huffman; use Huffman;
 with Dico; use Dico;
 with Compression; use Compression;
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with decompression; use decompression;
 
 
 procedure tp_huffman is
@@ -36,8 +37,7 @@ procedure tp_huffman is
 
 	procedure Decompresse(Nom_Fichier_In, Nom_Fichier_Out : in String) is
 	begin
-		-- A COMPLETER!
-		return;
+        decompression.Decompresse(Nom_Fichier_In, Nom_Fichier_Out);
 	end Decompresse;
 
 
