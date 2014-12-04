@@ -162,11 +162,11 @@ package body Huffman is
         Flux_In : Ada.Streams.Stream_IO.Stream_Access;
         C : Octet;
         O : Octet;
-        B : Bit;
         F : PFile.File;
         Last_Chars : Tab8Char;
         SeqBits : Tab8Bit;
         I_Seq : Integer := 0;
+        Nb_Occ : Unsigned_32;
     begin
         for I in Last_Chars'range loop
             Last_Chars(I) := Character'Val(0);
@@ -181,19 +181,22 @@ package body Huffman is
 
         --On écrit le tableau d'Occurrences de la manière suivante : 
         --Suite de 4 Octets :
-        --  1 Octets : Le caractère en question
-        --  3 Octest : Le nombre d'occurrences du caractère.
+        --  1er Octet : Le caractère en question
+        --  3 Octets suivants : Le nombre d'occurrences du caractère.
         for I in H.Tab_Occ'range loop
             if H.Tab_Occ(I) /= 0 then
                 O := Octet(I);
                 Octet'Output(Flux_Out, O);
-                O := Octet(H.Tab_Occ(I) / (256 * 256));
+                Nb_Occ := Unsigned_32(H.Tab_Occ(I));
+                O := Octet(Shift_Right(Nb_Occ, 24));
                 Octet'Output(Flux_Out, O);
-                O := Octet(H.Tab_Occ(I) /  256);
+                O := Octet(Shift_Right(Shift_Left(Nb_Occ, 8), 24));
                 Octet'Output(Flux_Out, O);
-                O := Octet(H.Tab_Occ(I) );
+                O := Octet(Shift_Right(Shift_Left(Nb_Occ, 16), 24));
                 Octet'Output(Flux_Out, O);
-                Nb_Octets_Ecrits := Nb_Octets_Ecrits + 4;
+                O := Octet(Shift_Right(Shift_Left(Nb_Occ, 24), 24));
+                Octet'Output(Flux_Out, O);
+                Nb_Octets_Ecrits := Nb_Octets_Ecrits + 5;
             end if;
         end loop;
 
@@ -213,20 +216,13 @@ package body Huffman is
                 I_Seq := I_Seq + 1;
                 if I_Seq = 8 then
                     O := Octet(ConvertBin2Dec(SeqBits));
-
-                    Put_Line("SeqBits : ");
-                    for I in SeqBits'range loop
-                        Put(SeqBits(I));
-                    end loop;
-
-                    Put(ConvertBin2Dec(SeqBits));
-                    new_Line;
                     Octet'Output(Flux_Out, O);
                     Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
                     I_Seq := 0;
                 end if;
 
             end loop;
+
 
             --Écriture du Code de ce Caractère dans le Fichier de sortie
 
@@ -244,11 +240,22 @@ package body Huffman is
             --            end if;
 
         end loop;
+        --Écriture du dernier Octet si il n'est pas complet
+        while I_Seq < 8 loop
+            SeqBits(I_Seq) := 1;
+            I_Seq := I_Seq + 1;
+            O := Octet(ConvertBin2Dec(SeqBits));
+            Octet'Output(Flux_Out, O);
+            Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
+        end loop;
+
         Close(Fichier);
         return Nb_Octets_Ecrits;
     end Ecrit_Huffman;
 
 
+    --Fonction qui prend en paramètre un tableau contenant 8 bits.
+    --Retourne la valeur décimale de ce mot de 8 bits
     function ConvertBin2Dec(SeqBits : Tab8Bit) return Integer is
         Base : Integer := 128;
         Resultat : Integer := 0;
