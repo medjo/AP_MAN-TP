@@ -165,18 +165,32 @@ package body Huffman is
         --1er Octet du Fichier : le nombre de caractère différents présents dans le texte.
         O := Octet(H.Nb_Prio);
         Octet'Output(Flux_Out, O);
+        Nb_Octets_Ecrits := Nb_Octets_Ecrits + 1;
 
+        --On écrit le tableau d'Occurrences de la manière suivante : 
+        --Suite de 4 Octets :
+        --  1 Octets : Le caractère en question
+        --  3 Octest : Le nombre d'occurrences du caractère.
         for I in H.Tab_Occ'range loop
             if H.Tab_Occ(I) /= 0 then
                 O := Octet(I);
                 Octet'Output(Flux_Out, O);
-
+                O := Octet(H.Tab_Occ(I) / (256 * 256));
+                Octet'Output(Flux_Out, O);
+                O := Octet(H.Tab_Occ(I) /  256);
+                Octet'Output(Flux_Out, O);
+                O := Octet(H.Tab_Occ(I) );
+                Octet'Output(Flux_Out, O);
+                Nb_Octets_Ecrits := Nb_Octets_Ecrits + 4;
             end if;
         end loop;
 
 
         while not End_Of_File(Fichier) loop
-            C := Character'Input(Flux_In); 
+            --Lecture d'un caractère dans le fichier en entrée
+            C := Character'Input(Flux_In);
+            --Écriture du Code de ce Caractère dans le Fichier de sortie
+
         end loop;
         Close(Fichier);
         return Nb_Octets_Ecrits;

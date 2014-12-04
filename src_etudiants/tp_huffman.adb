@@ -20,7 +20,7 @@ procedure tp_huffman is
     Flux : Ada.Streams.Stream_IO.Stream_Access;
 	begin
         Huff := Cree_Huffman(Nom_Fichier_In);
-        D := Genere_Dictionnaire(Huff);
+        Huff.D := Genere_Dictionnaire(Huff);
 
         Create(Fichier, Out_File, Nom_Fichier_Out);
         Flux := Stream(Fichier);
